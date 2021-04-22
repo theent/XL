@@ -1,0 +1,61 @@
+plugins {
+  id 'java'
+  id 'application'
+  id 'idea'
+  id 'eclipse'
+  id 'org.openjfx.javafxplugin' version '0.0.9'
+}
+
+repositories {
+	mavenLocal()
+	mavenCentral()
+}
+
+dependencies {
+  implementation 'com.google.guava:guava:28.2-jre'
+  testImplementation 'junit:junit:4.12'
+  testImplementation 'com.google.truth:truth:1.0'
+}
+
+sourceCompatibility = targetCompatibility = '11'
+
+mainClassName = 'gui.XL'
+jar.manifest.attributes 'Main-Class': mainClassName
+jar.destinationDirectory = projectDir
+
+javafx {
+    version = "11.0.2"
+    modules = [ 'javafx.controls' ]
+}
+
+test {
+  // Log passed/failed tests in the console (see also build/reports/tests):
+  testLogging.events 'passed', 'failed'
+
+  testLogging.exceptionFormat = 'full' // Full error output for test failures.
+
+  dependsOn 'cleanTest'  // This causes tests to always be re-run.
+}
+
+// Hack to get eclipse project to work.
+// See https://stackoverflow.com/questions/47676613/how-to-to-tell-eclipse-buildship-gradle-to-add-dependencies-to-the-modulepath
+eclipse.classpath.file {
+    whenMerged {
+        entries.findAll { it.kind == "lib" }.each { it.entryAttributes['module'] = 'true' }
+    }
+}
+
+task projectZip(type: Zip) {
+  from fileTree(dir: ".", includes: [
+    'src/**',
+    'doc/*.pdf',
+    'test/*.xl',
+    'gradle/**',
+    'build.gradle',
+    'gradlew',
+    'gradlew.bat',
+    'settings.gradle',
+  ])
+  archiveFileName = "xl.zip"
+  destinationDirectory = projectDir
+}
