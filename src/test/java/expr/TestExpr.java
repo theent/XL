@@ -15,17 +15,23 @@ public class TestExpr {
 
     @Test public void test2() throws IOException {
         Environment env = name -> {
-            if (name.equals("A3"))
+            if (name.equals("A3")){
+                System.out.println("dwdw");
                 return new ValueResult(1);
-            if (name.equals("A2"))
+            }
+            if (name.equals("A2")){
+                System.out.println("dwdw");
                 return new ValueResult(2);
-            if (name.equals("A1"))
+            }
+            if (name.equals("A1")){
+                System.out.println("dwdw");
                 return new ValueResult(3);
+            }
             System.out.println(name + " is undefined");
             return new ValueResult(0);
         };
         ExprParser parser = new ExprParser();
-        Expr expr = parser.build("1+2*3");
-        assertEquals(expr.value(env).toString(), "7.0");
+        Expr expr = parser.build("A3 + A2");
+        assertEquals(expr.value(env).toString(), "3.0");
     }
 }
