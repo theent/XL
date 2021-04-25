@@ -44,6 +44,7 @@ public class XL extends Application {
       GridPane.setConstraints(lbl, c + 1, 0);
       sheet.getChildren().add(lbl);
     }
+
     Label addressLbl = new Label("?? =");
     addressLbl.setMinWidth(35);
     for (int r = 0; r < XLModel.ROWS; ++r) {
@@ -51,6 +52,7 @@ public class XL extends Application {
       GridPane.setConstraints(lbl, 0, r + 1);
       sheet.getChildren().add(lbl);
     }
+
     for (int r = 0; r < XLModel.ROWS; ++r) {
       for (int c = 0; c < XLModel.COLUMNS; ++c) {
         CellAddress address = new CellAddress(c, r);
@@ -60,6 +62,7 @@ public class XL extends Application {
         sheet.getChildren().add(cell);
       }
     }
+
     TextField editor = new TextField();
     editor.setMinWidth(320);
     editor.setDisable(true);
@@ -70,10 +73,12 @@ public class XL extends Application {
         model.update(cell.address, editor.getText());
       }
     });
+
     currentCell.addListener((observable, oldValue, newValue) -> {
       if (oldValue != null) {
         oldValue.onDeselect();
       }
+
       if (newValue != null) {
         addressLbl.setText(newValue.address.toString() + " =");
         editor.setDisable(false);
@@ -84,6 +89,7 @@ public class XL extends Application {
         editor.setDisable(true);
       }
     });
+
     HBox editBox = new HBox(5);
     editBox.setAlignment(Pos.BASELINE_LEFT);
     editBox.getChildren().add(addressLbl);
@@ -123,6 +129,7 @@ public class XL extends Application {
     try {
       model.loadFile(file);
     } catch (IOException e) {
+      e.printStackTrace();
     }
   }
 

@@ -1,5 +1,6 @@
 package gui.menu;
 
+import gui.CellSelectionObserver;
 import gui.XL;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
@@ -18,9 +19,11 @@ public class XLMenu extends MenuBar {
     Menu editMenu = new Menu("Edit");
     MenuItem clear = new MenuItem("Clear");
     clear.setOnAction(event -> {
+      //TODO: clear selected cell
     });
     MenuItem clearAll = new MenuItem("ClearAll");
     clearAll.setOnAction(event -> {
+      //TODO: Clear all cells
     });
     editMenu.getItems().addAll(clear, clearAll);
     getMenus().addAll(fileMenu, editMenu);
