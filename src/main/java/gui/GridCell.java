@@ -40,16 +40,19 @@ public class GridCell extends Label {
     setFont(Font.font("Sans Serif", FontWeight.BOLD, 12));
     setBorder(normalBorder);
     setBackground(normalBackground);
+
     setOnMouseClicked(event -> {
       onSelect();
       listener.selectionChanged(this);
     });
+
     setOnMouseEntered(event -> {
       if (!selected) {
         setBackground(hoverBackground);
       }
       setBorder(hoverBorder);
     });
+
     setOnMouseExited(event -> {
       if (!selected) {
         setBackground(normalBackground);
