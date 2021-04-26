@@ -12,14 +12,27 @@ public class XLBufferedReader extends BufferedReader {
     super(new FileReader(file));
   }
 
-  // TODO Change Object to something appropriate
-  public void load(Map<String, Object> map) throws IOException {
+  // TODO Change Object to something appropriate Till Double
+  public void load(Map<String, Double> map) throws IOException {
     try {
+      System.out.println("#### " + "address + exp for each cell" +  " ####");
       while (ready()) {
         String string = readLine();
         int i = string.indexOf('=');
+        String address = string.substring(0, i);
+        String exp = string.substring(i + 1);
+        double d = Double.parseDouble(exp);
+
+        System.out.print("#### " + address +  " ####");
+        System.out.print("#### " + exp +  " ####");
+        System.out.println("#### " + d +  " ####");
+
+        map.put(address, d);
+
         // TODO
       }
+
+
     } catch (Exception e) {
       throw new XLException(e.getMessage());
     }

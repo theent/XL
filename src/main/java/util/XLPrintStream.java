@@ -11,8 +11,8 @@ public class XLPrintStream extends PrintStream {
   }
 
   // TODO Change Object to something appropriate
-  public void save(Set<Entry<String, Object>> set) {
-    for (Entry<String, Object> entry : set) {
+  public void save(Set<Entry<String, Double>> set) { //TODO Ändrat till double från object
+    for (Entry<String, Double> entry : set) {
       print(entry.getKey());
       print('=');
       println(entry.getValue());
