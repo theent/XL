@@ -29,18 +29,18 @@ public class XLModel {
     ExprParser parser = new ExprParser();
 
     try {
-     if(text.length()==0){
+     if(text.length() == 0){
         xl.cellValueUpdated(address.toString(), "");
       }
       else if(text.charAt(0) == '#') {
-
+            xl.cellValueUpdated(address.toString(), text.substring(1));
       } else {
-        prov.put(address, text);
         Environment value = new ExprEnviroment();
         Expr a =  parser.build(text);
         double temp = a.value(value).value();
         xl.cellValueUpdated(address.toString(), Double.toString(temp));
       }
+        prov.put(address, text);
     } catch (IOException e){
       e.printStackTrace();
     }
