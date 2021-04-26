@@ -18,7 +18,7 @@ public class XLModel {
   public static final int COLUMNS = 10, ROWS = 10;
 
   public static Map<CellAddress, String> prov = new HashMap<>();
-  public static Map<String, Double> values = new HashMap<>();
+  private Map<String, Double> values = new HashMap<>();
 
 
   /**
