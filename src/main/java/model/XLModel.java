@@ -5,7 +5,6 @@ import expr.Expr;
 import expr.ExprParser;
 import expr.ValueResult;
 import gui.XL;
-import javafx.scene.control.Cell;
 import util.XLBufferedReader;
 
 import java.io.File;
@@ -41,10 +40,10 @@ public class XLModel {
     try {
      if(text.length() == 0){
         xl.cellValueUpdated(address.toString(), "");
+        values.remove(address.toString());
       } else if(text.charAt(0) == '#') {
         xl.cellValueUpdated(address.toString(), text.substring(1));
       } else {
-        Environment env = new ExprEnviroment();
         Expr a =  parser.build(text);
         double temp = a.value(env).value();
         xl.cellValueUpdated(address.toString(), Double.toString(temp));
