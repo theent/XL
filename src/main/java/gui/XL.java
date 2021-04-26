@@ -1,5 +1,6 @@
 package gui;
 
+import expr.ValueResult;
 import gui.menu.XLMenu;
 import javafx.application.Application;
 import javafx.beans.property.ObjectProperty;

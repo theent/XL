@@ -3,6 +3,7 @@ package model;
 import expr.Environment;
 import expr.Expr;
 import expr.ExprParser;
+import expr.ValueResult;
 import gui.XL;
 import javafx.scene.control.Cell;
 import util.XLBufferedReader;
@@ -17,6 +18,8 @@ public class XLModel {
   public static final int COLUMNS = 10, ROWS = 10;
 
   public static Map<CellAddress, String> prov = new HashMap<>();
+  private Map<String, Double> values = new HashMap<>();
+
 
   /**
    * Called when the code for a cell changes.
@@ -27,17 +30,25 @@ public class XLModel {
   public void update(CellAddress address, String text, XL xl) {
     ExprParser parser = new ExprParser();
 
+    Environment env = name -> {
+      if (values.containsKey(name)){
+        return new ValueResult(values.get(name));
+      }
+
+      return null;
+    };
+
     try {
      if(text.length() == 0){
         xl.cellValueUpdated(address.toString(), "");
-      }
-      else if(text.charAt(0) == '#') {
-            xl.cellValueUpdated(address.toString(), text.substring(1));
+      } else if(text.charAt(0) == '#') {
+        xl.cellValueUpdated(address.toString(), text.substring(1));
       } else {
         Environment env = new ExprEnviroment();
         Expr a =  parser.build(text);
         double temp = a.value(env).value();
         xl.cellValueUpdated(address.toString(), Double.toString(temp));
+        values.put(address.toString(), temp);
       }
         prov.put(address, text);
     } catch (IOException e){
