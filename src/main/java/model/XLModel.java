@@ -5,7 +5,6 @@ import expr.Expr;
 import expr.ExprParser;
 import expr.ValueResult;
 import gui.XL;
-import javafx.scene.control.Cell;
 import util.XLBufferedReader;
 
 import java.io.File;
@@ -29,8 +28,8 @@ public class XLModel {
    */
   public void update(CellAddress address, String text, XL xl) {
     ExprParser parser = new ExprParser();
-    System.out.println(address);
 
+    // Fixa så att alla referenser uppdateras.
     Environment env = name -> {
       if (values.containsKey(name)){
         return new ValueResult(values.get(name));
@@ -42,12 +41,12 @@ public class XLModel {
     try {
      if(text.length() == 0){
         xl.cellValueUpdated(address.toString(), "");
+        values.remove(address.toString());
       } else if(text.charAt(0) == '#') {
         xl.cellValueUpdated(address.toString(), text.substring(1));
       } else {
-        Environment env1 = new ExprEnviroment();
-        Expr a =  parser.build(text);
-        double temp = a.value(env1).value();
+        Expr expr =  parser.build(text); // felhantering, beroende på vad det är för typ av expression
+        double temp = expr.value(env).value();
         xl.cellValueUpdated(address.toString(), Double.toString(temp));
         values.put(address.toString(), temp);
       }
