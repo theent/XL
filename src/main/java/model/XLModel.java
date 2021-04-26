@@ -30,7 +30,6 @@ public class XLModel {
   public void update(CellAddress address, String text, XL xl) {
     ExprParser parser = new ExprParser();
 
-    // Fixa så att alla referenser uppdateras.
     Environment env = name -> {
       if (values.containsKey(name)){
         return new ValueResult(values.get(name));
@@ -89,7 +88,6 @@ public class XLModel {
       update(new CellAddress(row, col), Double.toString(entry.getValue()), xl);
 
     }
-
   }
 
   public void saveFile(File file) {
@@ -104,6 +102,5 @@ public class XLModel {
       e.printStackTrace();
 
     }
-
   }
-  }
+}
