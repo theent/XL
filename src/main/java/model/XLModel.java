@@ -29,7 +29,10 @@ public class XLModel {
     ExprParser parser = new ExprParser();
 
     try {
-      if(text.charAt(0) == '#') {
+     if(text.length()==0){
+        xl.cellValueUpdated(address.toString(), "");
+      }
+      else if(text.charAt(0) == '#') {
 
       } else {
         prov.put(address, text);
