@@ -49,6 +49,17 @@ public class XLModel {
         double temp = expr.value(env).value();
         xl.cellValueUpdated(address.toString(), Double.toString(temp));
         values.put(address.toString(), temp);
+
+        // Vi måste göra någon form av rekursiv beräkning
+       /*for (Map.Entry<CellAddress, String> ref : prov.entrySet()) {
+          if (ref.getValue().contains(address.toString()) && !ref.getKey().equals(address)){
+            Expr expr2 =  parser.build(text);
+            double temp2 = expr2.value(env).value();
+            xl.cellValueUpdated(ref.getKey().toString(), Double.toString(temp2));
+            values.put(address.toString(), temp2);
+          }
+       }*/
+
       }
         prov.put(address, text);
     } catch (IOException e){
