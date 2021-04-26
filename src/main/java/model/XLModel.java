@@ -4,14 +4,19 @@ import expr.Environment;
 import expr.Expr;
 import expr.ExprParser;
 import gui.XL;
+import javafx.scene.control.Cell;
 import util.XLBufferedReader;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class XLModel {
   public static final int COLUMNS = 10, ROWS = 10;
+
+  public static Map<CellAddress, String> prov = new HashMap<>();
 
   /**
    * Called when the code for a cell changes.
@@ -27,6 +32,7 @@ public class XLModel {
       if(text.charAt(0) == '#') {
 
       } else {
+        prov.put(address, text);
         Environment value = new ExprEnviroment();
         Expr a =  parser.build(text);
         double temp = a.value(value).value();

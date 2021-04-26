@@ -86,6 +86,7 @@ public class XL extends Application {
         addressLbl.setText(newValue.address.toString() + " =");
         editor.setDisable(false);
         // TODO: update editor text.
+        editor.setText(XLModel.prov.get(newValue.address));
         editor.requestFocus();
       } else {
         addressLbl.setText("?? =");
