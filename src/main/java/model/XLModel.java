@@ -29,6 +29,7 @@ public class XLModel {
   public void update(CellAddress address, String text, XL xl) {
     ExprParser parser = new ExprParser();
 
+    // Fixa så att alla referenser uppdateras.
     Environment env = name -> {
       if (values.containsKey(name)){
         return new ValueResult(values.get(name));
@@ -44,8 +45,8 @@ public class XLModel {
       } else if(text.charAt(0) == '#') {
         xl.cellValueUpdated(address.toString(), text.substring(1));
       } else {
-        Expr a =  parser.build(text);
-        double temp = a.value(env).value();
+        Expr expr =  parser.build(text); // felhantering, beroende på vad det är för typ av expression
+        double temp = expr.value(env).value();
         xl.cellValueUpdated(address.toString(), Double.toString(temp));
         values.put(address.toString(), temp);
       }
