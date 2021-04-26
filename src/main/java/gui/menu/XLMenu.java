@@ -20,6 +20,7 @@ public class XLMenu extends MenuBar {
     MenuItem clear = new MenuItem("Clear");
     clear.setOnAction(event -> {
       //TODO: clear selected cell
+      xl.cellValueUpdated(xl.getAddress(), "");
     });
     MenuItem clearAll = new MenuItem("ClearAll");
     clearAll.setOnAction(event -> {

@@ -25,7 +25,6 @@ public class XLModel {
    * @param text    the new code for the cell - can be raw text (starting with #) or an expression
    */
   public void update(CellAddress address, String text, XL xl) {
-    //TODO: Calculate expression and call on cellValueUpdated
     ExprParser parser = new ExprParser();
 
     try {
@@ -35,9 +34,9 @@ public class XLModel {
       else if(text.charAt(0) == '#') {
             xl.cellValueUpdated(address.toString(), text.substring(1));
       } else {
-        Environment value = new ExprEnviroment();
+        Environment env = new ExprEnviroment();
         Expr a =  parser.build(text);
-        double temp = a.value(value).value();
+        double temp = a.value(env).value();
         xl.cellValueUpdated(address.toString(), Double.toString(temp));
       }
         prov.put(address, text);
