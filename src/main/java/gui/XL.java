@@ -31,6 +31,9 @@ public class XL extends Application {
 
   public XL() {
     // TODO: add listener(s) for model?
+
+
+
   }
 
   public void onCellSelected(GridCell cell) {
@@ -70,7 +73,7 @@ public class XL extends Application {
       // This listener is called when the user presses the enter key in the editor.
       GridCell cell = currentCell.get();
       if (cell != null) {
-        model.update(cell.address, editor.getText());
+        model.update(cell.address, editor.getText(), this);
       }
     });
 

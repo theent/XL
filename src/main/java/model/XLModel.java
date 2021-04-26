@@ -1,7 +1,9 @@
 package model;
 
+import expr.Environment;
 import expr.Expr;
 import expr.ExprParser;
+import gui.XL;
 import util.XLBufferedReader;
 
 import java.io.File;
@@ -17,15 +19,22 @@ public class XLModel {
    * @param address address of the cell that is being edited
    * @param text    the new code for the cell - can be raw text (starting with #) or an expression
    */
-  public void update(CellAddress address, String text) {
+  public void update(CellAddress address, String text, XL xl) {
     //TODO: Calculate expression and call on cellValueUpdated
     ExprParser parser = new ExprParser();
-   /* try {
-      parser.build(text).value();
-      System.out.println(text);
+
+    try {
+      if(text.charAt(0) == '#') {
+
+      } else {
+        Environment value = new ExprEnviroment();
+        Expr a =  parser.build(text);
+        double temp = a.value(value).value();
+        xl.cellValueUpdated(address.toString(), Double.toString(temp));
+      }
     } catch (IOException e){
       e.printStackTrace();
-    }*/
+    }
   }
 
   public void loadFile(File file) throws FileNotFoundException {
