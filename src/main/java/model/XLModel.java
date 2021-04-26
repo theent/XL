@@ -31,9 +31,8 @@ public class XLModel {
     try {
      if(text.length() == 0){
         xl.cellValueUpdated(address.toString(), "");
-      }
-      else if(text.charAt(0) == '#') {
-            xl.cellValueUpdated(address.toString(), text.substring(1));
+      } else if(text.charAt(0) == '#') {
+        xl.cellValueUpdated(address.toString(), text.substring(1));
       } else {
         Environment value = new ExprEnviroment();
         Expr a =  parser.build(text);
