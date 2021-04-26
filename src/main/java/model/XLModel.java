@@ -29,6 +29,7 @@ public class XLModel {
    */
   public void update(CellAddress address, String text, XL xl) {
     ExprParser parser = new ExprParser();
+    System.out.println(address);
 
     Environment env = name -> {
       if (values.containsKey(name)){
@@ -44,9 +45,9 @@ public class XLModel {
       } else if(text.charAt(0) == '#') {
         xl.cellValueUpdated(address.toString(), text.substring(1));
       } else {
-        Environment env = new ExprEnviroment();
+        Environment env1 = new ExprEnviroment();
         Expr a =  parser.build(text);
-        double temp = a.value(env).value();
+        double temp = a.value(env1).value();
         xl.cellValueUpdated(address.toString(), Double.toString(temp));
         values.put(address.toString(), temp);
       }
