@@ -26,7 +26,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class XL extends Application {
-  ObjectProperty<GridCell> currentCell = new SimpleObjectProperty<>();
+  ObjectProperty<GridCell> currentCell = new SimpleObjectProperty<>(); //ObjectProperty extends Observable
   Map<String, GridCell> cells = new HashMap<>();
   XLModel model = new XLModel();
 

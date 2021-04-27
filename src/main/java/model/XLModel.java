@@ -5,8 +5,6 @@ import expr.Expr;
 import expr.ExprParser;
 import expr.ValueResult;
 import gui.XL;
-import util.XLBufferedReader;
-import util.XLPrintStream;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -78,7 +76,6 @@ public class XLModel {
       e.printStackTrace();
     }
 
-    System.out.println("#### Whole Map ####");
     for(Map.Entry<String, Double> entry : values.entrySet()) {
       String address = entry.getKey();
       char rowC  = address.charAt(0);
@@ -103,4 +100,13 @@ public class XLModel {
 
     }
   }
+
+  private Map<String, Double> formatMap(Map<CellAddress, String> prov) {
+    Map<String, Double> newOne = new HashMap<>();
+    for (Map.Entry<CellAddress, String> entry : prov.entrySet()) {
+      newOne.put(entry.getKey().toString(), Double.parseDouble(entry.getValue()));
+    }
+    return newOne;
+  }
+
 }
