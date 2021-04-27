@@ -1,9 +1,6 @@
 package model;
 
-import expr.Environment;
-import expr.Expr;
-import expr.ExprParser;
-import expr.ValueResult;
+import expr.*;
 import gui.XL;
 
 import java.io.File;
@@ -37,7 +34,7 @@ public class XLModel {
         return new ValueResult(Double.parseDouble(calculateExpr(prov.get(name))));
       }
 
-      return null;
+      return new ErrorResult("Can't find it");
     };
 
      if(text.length() == 0){
@@ -65,6 +62,8 @@ public class XLModel {
   private String calculateExpr(String text) {
     try{
       Expr expr =  parser.build(text); // felhantering, beroende på vad det är för typ av expression
+      if (expr.value(env).isError())
+        System.out.println("dwdwdw");
       return Double.toString(expr.value(env).value());
 
     } catch (IOException e){
