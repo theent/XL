@@ -69,17 +69,13 @@ public class XLModel {
   }
 
   public void loadFile(File file, XL xl) throws FileNotFoundException {
-    System.out.println("#### load ####");
-    System.out.println("#### " + file.toString() + " ####");
     XLBufferedReader reader = new XLBufferedReader(file);
-
     try {
       reader.load(values);
     } catch (IOException e) {
       e.printStackTrace();
     }
 
-    System.out.println("#### Whole Map ####");
     for(Map.Entry<String, Double> entry : values.entrySet()) {
       String address = entry.getKey();
       char rowC  = address.charAt(0);
@@ -87,23 +83,18 @@ public class XLModel {
       int row = rowC - 65;
       int col = colC - 49;
       update(new CellAddress(row, col), Double.toString(entry.getValue()), xl);
-
     }
 
   }
 
   public void saveFile(File file) {
-    System.out.println("#### Save ####");
-    System.out.println("#### " + file.toString() + " ####");
     //TODO: implement this
     try {
       XLPrintStream printStream = new XLPrintStream(file.toString());
       printStream.save(values.entrySet());
-
     } catch (FileNotFoundException e) {
       e.printStackTrace();
-
     }
+  }
 
-  }
-  }
+}
