@@ -74,7 +74,7 @@ public class XLModel {
     return null;
   }
 
-  public void loadFile(File file, XL xl) throws FileNotFoundException {
+  public void loadFile(File file) throws FileNotFoundException {
     System.out.println("#### load ####");
     System.out.println("#### " + file.toString() + " ####");
     XLBufferedReader reader = new XLBufferedReader(file);

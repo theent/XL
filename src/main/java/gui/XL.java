@@ -129,7 +129,7 @@ public class XL extends Application {
 
   public void loadFile(File file) {
     try {
-      model.loadFile(file, this);
+      model.loadFile(file);
     } catch (IOException e) {
       e.printStackTrace();
     }
