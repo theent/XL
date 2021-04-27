@@ -15,9 +15,15 @@ import java.util.Map;
 public class XLModel {
   public static final int COLUMNS = 10, ROWS = 10;
 
-  public static Map<CellAddress, String> prov = new HashMap<>();
-  private Map<String, Double> values = new HashMap<>();
+  public static Map<String, String> prov = new HashMap<>();
+  private Environment env;
+  private XL xl;
+  private ExprParser parser;
 
+  public XLModel(XL xl){
+    this.xl = xl;
+    parser = new ExprParser();
+  }
 
   /**
    * Called when the code for a cell changes.
@@ -25,28 +31,22 @@ public class XLModel {
    * @param address address of the cell that is being edited
    * @param text    the new code for the cell - can be raw text (starting with #) or an expression
    */
-  public void update(CellAddress address, String text, XL xl) {
-    ExprParser parser = new ExprParser();
-
-    Environment env = name -> {
-      if (values.containsKey(name)){
-        return new ValueResult(values.get(name));
+  public void update(CellAddress address, String text) {
+     env = name -> {
+      if (prov.containsKey(name)){
+        return new ValueResult(Double.parseDouble(calculateExpr(prov.get(name))));
       }
 
       return null;
     };
 
-    try {
      if(text.length() == 0){
         xl.cellValueUpdated(address.toString(), "");
-        values.remove(address.toString());
       } else if(text.charAt(0) == '#') {
         xl.cellValueUpdated(address.toString(), text.substring(1));
       } else {
-        Expr expr =  parser.build(text); // felhantering, beroende på vad det är för typ av expression
-        double temp = expr.value(env).value();
-        xl.cellValueUpdated(address.toString(), Double.toString(temp));
-        values.put(address.toString(), temp);
+
+       xl.cellValueUpdated(address.toString(), calculateExpr(text));
 
         // Vi måste göra någon form av rekursiv beräkning
        /*for (Map.Entry<CellAddress, String> ref : prov.entrySet()) {
@@ -59,10 +59,19 @@ public class XLModel {
        }*/
 
       }
-        prov.put(address, text);
+        prov.put(address.toString(), text);
+  }
+
+  private String calculateExpr(String text) {
+    try{
+      Expr expr =  parser.build(text); // felhantering, beroende på vad det är för typ av expression
+      return Double.toString(expr.value(env).value());
+
     } catch (IOException e){
       e.printStackTrace();
     }
+
+    return null;
   }
 
   public void loadFile(File file, XL xl) throws FileNotFoundException {
@@ -70,7 +79,7 @@ public class XLModel {
     System.out.println("#### " + file.toString() + " ####");
     XLBufferedReader reader = new XLBufferedReader(file);
 
-    try {
+    /*try {
       reader.load(values);
     } catch (IOException e) {
       e.printStackTrace();
@@ -83,8 +92,7 @@ public class XLModel {
       int row = rowC - 65;
       int col = colC - 49;
       update(new CellAddress(row, col), Double.toString(entry.getValue()), xl);
-
-    }
+    }*/
   }
 
   public void saveFile(File file) {
@@ -93,7 +101,7 @@ public class XLModel {
     //TODO: implement this
     try {
       XLPrintStream printStream = new XLPrintStream(file.toString());
-      printStream.save(values.entrySet());
+      //printStream.save(values.entrySet());
 
     } catch (FileNotFoundException e) {
       e.printStackTrace();

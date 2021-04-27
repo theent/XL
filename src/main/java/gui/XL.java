@@ -28,7 +28,7 @@ import java.util.Map;
 public class XL extends Application {
   ObjectProperty<GridCell> currentCell = new SimpleObjectProperty<>(); //ObjectProperty extends Observable
   Map<String, GridCell> cells = new HashMap<>();
-  XLModel model = new XLModel();
+  XLModel model = new XLModel(this);
 
   public XL() {
     // TODO: add listener(s) for model?
@@ -71,7 +71,7 @@ public class XL extends Application {
       // This listener is called when the user presses the enter key in the editor.
       GridCell cell = currentCell.get();
       if (cell != null) {
-        model.update(cell.address, editor.getText(), this);
+        model.update(cell.address, editor.getText());
       }
     });
 
@@ -84,7 +84,7 @@ public class XL extends Application {
         addressLbl.setText(newValue.address.toString() + " =");
         editor.setDisable(false);
         // TODO: update editor text.
-        editor.setText(XLModel.prov.get(newValue.address));
+        editor.setText(XLModel.prov.get(newValue.address.toString()));
         editor.requestFocus();
       } else {
         addressLbl.setText("?? =");
