@@ -1,5 +1,8 @@
 package gui;
 
+import expr.Environment;
+import expr.ErrorResult;
+import expr.ExprResult;
 import expr.ValueResult;
 import gui.menu.XLMenu;
 import javafx.application.Application;
@@ -18,6 +21,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import model.CellAddress;
+import model.Expression;
 import model.XLModel;
 
 import java.io.File;
@@ -25,7 +29,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class XL extends Application {
+public class XL extends Application implements Environment {
   ObjectProperty<GridCell> currentCell = new SimpleObjectProperty<>(); //ObjectProperty extends Observable
   Map<String, GridCell> cells = new HashMap<>();
   XLModel model = new XLModel(this);
@@ -84,7 +88,7 @@ public class XL extends Application {
         addressLbl.setText(newValue.address.toString() + " =");
         editor.setDisable(false);
         // TODO: update editor text.
-        editor.setText(XLModel.prov.get(newValue.address.toString()));
+        editor.setText(model.getContent(newValue.address.toString()).toString());
         editor.requestFocus();
       } else {
         addressLbl.setText("?? =");
@@ -140,5 +144,19 @@ public class XL extends Application {
   }
   public void saveFile(File file) {
     model.saveFile(file);
+  }
+
+  public void clearCell(String adress) {
+    model.clearCell(adress);
+  }
+
+  @Override
+  public ExprResult value(String name) {
+    var value = model.getContent(name);
+    if (value != null && value instanceof Expression){
+      return new ValueResult((double) value.getContent());
+    } else{
+      return new ErrorResult("Error");
+    }
   }
 }

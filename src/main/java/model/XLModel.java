@@ -2,25 +2,26 @@ package model;
 
 import expr.*;
 import gui.XL;
-import javafx.scene.control.Cell;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class XLModel {
   public static final int COLUMNS = 10, ROWS = 10;
 
-  public static Map<String, String> prov = new HashMap<>();
-  private Environment env;
+  // String = Adress, typ B3, Cell är vad addressen innehåller
+  private Map<String, Cell> contents;
   private XL xl;
   private ExprParser parser;
 
   public XLModel(XL xl){
     this.xl = xl;
     parser = new ExprParser();
+    contents = new HashMap<>();
   }
 
   /**
@@ -30,49 +31,45 @@ public class XLModel {
    * @param text    the new code for the cell - can be raw text (starting with #) or an expression
    */
   public void update(CellAddress address, String text) {
-    env = name -> {
-      if (prov.containsKey(name)){
-        return new ValueResult(Double.parseDouble(exprParser(prov.get(name))));
+
+    Cell c;
+      if (text.length() == 0){
+        c = new Empty();
+        xl.cellValueUpdated(address.toString(), c.getContent().toString());
+      } else if (text.charAt(0) == '#'){
+        c = new Comment(text.substring(1));
+        xl.cellValueUpdated(address.toString(), c.getContent().toString());
+      } else{
+        c = new Expression(exprParser(text), text);
+        xl.cellValueUpdated(address.toString(), c.getContent().toString());
       }
 
-      return new ErrorResult("Can't find it");
-    };
-
-     if(text.length() == 0){
-        xl.cellValueUpdated(address.toString(), "");
-      } else if(text.charAt(0) == '#') {
-        xl.cellValueUpdated(address.toString(), text.substring(1));
-      } else {
-
-       xl.cellValueUpdated(address.toString(), exprParser(text));
-
-        // Vi måste göra någon form av rekursiv beräkning
-       /*for (Map.Entry<CellAddress, String> ref : prov.entrySet()) {
-          if (ref.getValue().contains(address.toString()) && !ref.getKey().equals(address)){
-            Expr expr2 =  parser.build(text);
-            double temp2 = expr2.value(env).value();
-            xl.cellValueUpdated(ref.getKey().toString(), Double.toString(temp2));
-            values.put(address.toString(), temp2);
-          }
-       }*/
-
-      }
-        prov.put(address.toString(), text);
+    contents.put(address.toString(), c);
   }
 
-  private String exprParser(String text) {
+  public void clearCell(String address){
+    Cell c = new Empty();
+    contents.put(address, c);
+    xl.cellValueUpdated(address, c.toString());
+  }
+
+  private Double exprParser(String text) {
     try{
       Expr expr =  parser.build(text); // felhantering, beroende på vad det är för typ av expression
-      if (expr.value(env).isError())
-        System.out.println("dwdwdw");
-
-      return Double.toString(expr.value(env).value());
+      return expr.value(xl).value();
 
     } catch (IOException e){
       e.printStackTrace();
     }
 
     return null;
+  }
+
+  public Cell getContent(String address){
+    if (contents.containsKey(address))
+      return contents.get(address);
+
+    return new Empty();
   }
 
   public void loadFile(File file) throws FileNotFoundException {
