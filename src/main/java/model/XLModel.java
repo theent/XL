@@ -40,7 +40,7 @@ public class XLModel {
         c = new Comment(text.substring(1));
         xl.cellValueUpdated(address.toString(), c.getContent().toString());
       } else{
-        c = new Expression(exprParser(text), text);
+        c = exprParser(text);
         xl.cellValueUpdated(address.toString(), c.getContent().toString());
       }
 
@@ -53,10 +53,11 @@ public class XLModel {
     xl.cellValueUpdated(address, c.toString());
   }
 
-  private Double exprParser(String text) {
+  // Får eventuellt ändras
+  private Cell exprParser(String text) {
     try{
       Expr expr =  parser.build(text); // felhantering, beroende på vad det är för typ av expression
-      return expr.value(xl).value();
+      return new Expression(expr.value(xl).value(), text);
 
     } catch (IOException e){
       e.printStackTrace();
