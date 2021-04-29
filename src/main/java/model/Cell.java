@@ -1,5 +1,5 @@
 package model;
 
-public interface Cell {
+public interface Cell<T> {
 
 }
