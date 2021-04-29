@@ -115,5 +115,4 @@ public class XLModel {
     }
     return newOne;
   }
-
 }

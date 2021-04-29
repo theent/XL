@@ -1,6 +1,5 @@
 package gui.menu;
 
-import gui.CellSelectionObserver;
 import gui.XL;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
