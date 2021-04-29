@@ -23,8 +23,8 @@ public class XLMenu extends MenuBar {
     clear.setOnAction(event -> {
 
       //TODO: clear selected cell
-      System.out.println(xl.getAddress());
-      xl.cellValueUpdated(xl.getAddress(), "");
+      //System.out.println(xl.getAddress());
+      xl.clearCell(xl.getAddress());
     });
     MenuItem clearAll = new MenuItem("ClearAll");
     clearAll.setOnAction(event -> {
@@ -32,7 +32,8 @@ public class XLMenu extends MenuBar {
       String letters = "ABCDEFGHIJ";
       for(int j = 0; j <10; j++) {
         for(int i = 0; i < 10; i++) {
-          xl.cellValueUpdated(letters.substring(i, i + 1) + Integer.toString(j + 1), "");
+          String adress = letters.substring(i, i + 1) + Integer.toString(j + 1);
+          xl.clearCell(adress);
         }
       }
     });
