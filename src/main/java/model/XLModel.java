@@ -2,6 +2,7 @@ package model;
 
 import expr.*;
 import gui.XL;
+import javafx.scene.control.Cell;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -29,9 +30,9 @@ public class XLModel {
    * @param text    the new code for the cell - can be raw text (starting with #) or an expression
    */
   public void update(CellAddress address, String text) {
-     env = name -> {
+    env = name -> {
       if (prov.containsKey(name)){
-        return new ValueResult(Double.parseDouble(calculateExpr(prov.get(name))));
+        return new ValueResult(Double.parseDouble(exprParser(prov.get(name))));
       }
 
       return new ErrorResult("Can't find it");
@@ -43,7 +44,7 @@ public class XLModel {
         xl.cellValueUpdated(address.toString(), text.substring(1));
       } else {
 
-       xl.cellValueUpdated(address.toString(), calculateExpr(text));
+       xl.cellValueUpdated(address.toString(), exprParser(text));
 
         // Vi måste göra någon form av rekursiv beräkning
        /*for (Map.Entry<CellAddress, String> ref : prov.entrySet()) {
@@ -59,11 +60,12 @@ public class XLModel {
         prov.put(address.toString(), text);
   }
 
-  private String calculateExpr(String text) {
+  private String exprParser(String text) {
     try{
       Expr expr =  parser.build(text); // felhantering, beroende på vad det är för typ av expression
       if (expr.value(env).isError())
         System.out.println("dwdwdw");
+
       return Double.toString(expr.value(env).value());
 
     } catch (IOException e){
