@@ -87,7 +87,6 @@ public class XL extends Application implements Environment {
       if (newValue != null) {
         addressLbl.setText(newValue.address.toString() + " =");
         editor.setDisable(false);
-        // TODO: update editor text.
         editor.setText(model.getContent(newValue.address.toString()).toString());
         editor.requestFocus();
       } else {
@@ -122,7 +121,6 @@ public class XL extends Application implements Environment {
     stage.show();
   }
 
-  // TODO: called when the displayed value in a cell is updated.
   public void cellValueUpdated(String address, String value) {
     GridCell cell = cells.get(address);
     if (cell != null) {

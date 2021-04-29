@@ -21,14 +21,10 @@ public class XLMenu extends MenuBar {
     Menu editMenu = new Menu("Edit");
     MenuItem clear = new MenuItem("Clear");
     clear.setOnAction(event -> {
-
-      //TODO: clear selected cell
-      //System.out.println(xl.getAddress());
       xl.clearCell(xl.getAddress());
     });
     MenuItem clearAll = new MenuItem("ClearAll");
     clearAll.setOnAction(event -> {
-      //TODO: Clear all cells
       String letters = "ABCDEFGHIJ";
       for(int j = 0; j <10; j++) {
         for(int i = 0; i < 10; i++) {
