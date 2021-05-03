@@ -22,6 +22,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import model.CellAddress;
 import model.Expression;
+import model.OnUpdateListener;
 import model.XLModel;
 
 import java.io.File;
@@ -77,6 +78,10 @@ public class XL extends Application implements Environment {
       if (cell != null) {
         model.update(cell.address, editor.getText());
       }
+    });
+
+    model.addObserver(x ->{
+      cellValueUpdated(x.getKey(), x.getValue().getContent().toString());
     });
 
     currentCell.addListener((observable, oldValue, newValue) -> {

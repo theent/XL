@@ -6,22 +6,21 @@ import gui.XL;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class XLModel {
   public static final int COLUMNS = 10, ROWS = 10;
 
   // String = Adress, typ B3, Cell är vad addressen innehåller
   private Map<String, Cell> contents;
-  private XL xl;
   private ExprParser parser;
+  private List<OnUpdateListener> observers = new ArrayList<>();
+  private XL xl;
 
   public XLModel(XL xl){
-    this.xl = xl;
     parser = new ExprParser();
     contents = new HashMap<>();
+    this.xl = xl;
   }
 
   /**
@@ -35,22 +34,31 @@ public class XLModel {
     Cell c;
       if (text.length() == 0){
         c = new Empty();
-        xl.cellValueUpdated(address.toString(), c.getContent().toString());
       } else if (text.charAt(0) == '#'){
         c = new Comment(text.substring(1));
-        xl.cellValueUpdated(address.toString(), c.getContent().toString());
       } else{
         c = exprParser(text);
-        xl.cellValueUpdated(address.toString(), c.getContent().toString());
       }
 
-    contents.put(address.toString(), c);
+    notifyObservers(address.toString(), c);
   }
 
   public void clearCell(String address){
     Cell c = new Empty();
+    notifyObservers(address, c);
+  }
+
+  public void addObserver(OnUpdateListener o){
+    observers.add(o);
+  }
+
+  private void notifyObservers(String address, Cell c){
+    Map.Entry<String, Cell> entry = new AbstractMap.SimpleEntry<>(address, c);
+    for (OnUpdateListener o : observers){
+      o.onUpdate(entry);
+    }
+
     contents.put(address, c);
-    xl.cellValueUpdated(address, c.toString());
   }
 
   // Får eventuellt ändras
