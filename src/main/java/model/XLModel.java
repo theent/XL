@@ -104,14 +104,14 @@ public class XLModel {
 
   public void loadFile(File file) throws FileNotFoundException {
     XLBufferedReader reader = new XLBufferedReader(file);
-    Map<String, LinkedList<String>> tempMap = new LinkedHashMap<>();
+    //Map<String, LinkedList<String>> tempMap = new LinkedHashMap<>();
     try {
-      reader.load(tempMap);
+      reader.load(this);
     } catch (IOException e) {
       e.printStackTrace();
     }
 
-    addNumbers(tempMap);
+    //addNumbers(tempMap);
   }
 
   private void addNumbers(Map<String, LinkedList<String>> tempMap) {
