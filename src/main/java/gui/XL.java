@@ -76,12 +76,12 @@ public class XL extends Application implements Environment {
       // This listener is called when the user presses the enter key in the editor.
       GridCell cell = currentCell.get();
       if (cell != null) {
-        model.update(cell.address, editor.getText());
+        model.update(cell.address.toString(), editor.getText());
       }
     });
 
-    model.addObserver(x ->{
-      cellValueUpdated(x.getKey(), x.getValue().getContent().toString());
+    model.addObserver(entry ->{
+      cellValueUpdated(entry.getKey(), entry.getValue().getContent().toString());
     });
 
     currentCell.addListener((observable, oldValue, newValue) -> {

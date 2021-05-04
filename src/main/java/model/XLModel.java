@@ -29,7 +29,7 @@ public class XLModel {
    * @param address address of the cell that is being edited
    * @param text    the new code for the cell - can be raw text (starting with #) or an expression
    */
-  public void update(CellAddress address, String text) {
+  public void update(String address, String text) {
 
     Cell c;
       if (text.length() == 0){
@@ -40,9 +40,9 @@ public class XLModel {
         c = exprParser(text);
       }
 
-    notifyObservers(address.toString(), c);
+    notifyObservers(address, c);
     LinkedList<String> visited = new LinkedList<>();
-    checkReferences(address.toString(), visited);
+    checkReferences(address, visited);
   }
 
   public void clearCell(String address){
@@ -105,20 +105,26 @@ public class XLModel {
 
   public void loadFile(File file) throws FileNotFoundException {
     XLBufferedReader reader = new XLBufferedReader(file);
-    Map<String, String> tempMap = new HashMap<>();
+    //Map<String, LinkedList<String>> tempMap = new LinkedHashMap<>();
     try {
-      reader.load(tempMap);
+      reader.load(/*tempMap*/ this);
     } catch (IOException e) {
       e.printStackTrace();
     }
-    addNumbers(tempMap);
 
+    //addNumbers(tempMap);
   }
 
-  private void addNumbers(Map<String, String> tempMap) {
-    Map<String, String> newMap = new HashMap<>();
-    for (Map.Entry<String, String> entry : tempMap.entrySet()) {
-      if (entry.getValue().length() != 0) {
+  private void addNumbers(Map<String, LinkedList<String>> tempMap) {
+    for (Map.Entry<String, LinkedList<String>> entry : tempMap.entrySet()) {
+      System.out.println(entry.getValue());
+      System.out.println(entry.getKey());
+
+      for (String s : entry.getValue()){
+        update(entry.getKey(), s);
+      }
+
+      /*if (entry.getValue().length() != 0) {
         if (entry.getValue().charAt(0) != '#') {
           if (!Character.isDigit(entry.getValue().charAt(0))) {
             newMap.put(entry.getKey(), entry.getValue());
@@ -126,9 +132,9 @@ public class XLModel {
             updateWithCell(entry);
           }
         }
-      }
+      }*/
     }
-    addRef(newMap);
+    //addRef(newMap);
   }
 
   private void addRef(Map<String, String> newMap) {
@@ -167,7 +173,7 @@ public class XLModel {
       row = row1 - 49;
     }
     System.out.println(col +" "+ row);
-    update(new CellAddress(col, row), entry.getValue());
+    //update(new CellAddress(col, row), entry.getValue());
   }
 
   public void saveFile(File file) {

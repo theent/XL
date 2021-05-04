@@ -1,8 +1,5 @@
 package model;
 
-import expr.Expr;
-import expr.ExprParser;
-import expr.ExprResult;
 import util.XLException;
 
 import java.io.BufferedReader;
@@ -10,6 +7,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.LinkedList;
 import java.util.Map;
 
 public class XLBufferedReader extends BufferedReader {
@@ -17,8 +15,8 @@ public class XLBufferedReader extends BufferedReader {
     super(new FileReader(file));
   }
 
-  // TODO Change Object to something appropriate Till Double
-  public void load(Map<String, String> map) throws IOException {
+  // TODO Change Object to something appropriate
+  public void load(/*Map<String, LinkedList<String>> map*/ XLModel model) throws IOException {
     try {
       System.out.println("#### " + "Buffered Reader" +  " ####");
       while (ready()) {
@@ -30,7 +28,9 @@ public class XLBufferedReader extends BufferedReader {
         System.out.print("#### " + address +  " ");
         System.out.println("#### " + exp +  " ####");
 
-        map.put(address, exp);
+        model.update(address, exp);
+
+        //map.computeIfAbsent(address, k -> new LinkedList<>()).add(exp);
       }
     } catch (Exception e) {
       throw new XLException(e.getMessage());

@@ -11,17 +11,18 @@ public class XLPrintStream extends PrintStream {
   }
 
   // TODO Change Object to something appropriate
-  public void save(Set<Entry<String, Cell>> set) { //TODO Ändrat till double från object
+  public void save(Set<Entry<String, Cell>> set) {
     System.out.println("#### Print Stream ####");
     for (Entry<String, Cell> entry : set) {
       System.out.println(entry.getKey());
       print(entry.getKey());
       print('=');
-      if(entry.getValue() instanceof Comment) {
-        println("#" + entry.getValue());
+      println(entry.getValue());
+      /*if(entry.getValue() instanceof Comment) {
+        println(entry.getValue());
       } else {
         println(entry.getValue());
-      }
+      }*/
     }
     flush();
     close();
