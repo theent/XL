@@ -30,7 +30,6 @@ public class XLModel {
    * @param text    the new code for the cell - can be raw text (starting with #) or an expression
    */
   public void update(String address, String text) {
-
     Cell c;
       if (text.length() == 0){
         c = new Empty();
@@ -43,6 +42,7 @@ public class XLModel {
     notifyObservers(address, c);
     LinkedList<String> visited = new LinkedList<>();
     checkReferences(address, visited);
+    System.out.println(contents);
   }
 
   public void clearCell(String address){
@@ -79,8 +79,9 @@ public class XLModel {
   }
 
   private void checkReferences(String currentAddress, LinkedList<String> visited){
+    System.out.println(currentAddress + " dwdwdw");
     for (Map.Entry<String, Cell> entry : contents.entrySet()){
-      if (entry.getValue().toString().contains(currentAddress.toLowerCase()) && !entry.getKey().equals(currentAddress.toLowerCase())){
+      if (entry.getValue().toString().contains(currentAddress) && !entry.getKey().equals(currentAddress)){
           if (visited.contains(entry.getKey())){
             for (String s : visited){
               notifyObservers(s, new Comment(new ErrorResult("Circular Error").toString(), contents.get(s).toString()));

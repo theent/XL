@@ -28,6 +28,7 @@ import model.XLModel;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class XL extends Application implements Environment {
@@ -76,7 +77,7 @@ public class XL extends Application implements Environment {
       // This listener is called when the user presses the enter key in the editor.
       GridCell cell = currentCell.get();
       if (cell != null) {
-        model.update(cell.address.toString(), editor.getText());
+        model.update(cell.address.toString(), editor.getText().toUpperCase());
       }
     });
 
@@ -154,6 +155,7 @@ public class XL extends Application implements Environment {
 
   @Override
   public ExprResult value(String name) {
+    name = name.toUpperCase();
     var value = model.getContent(name);
     if (value != null && value instanceof Expression){
       return new ValueResult((double) value.getContent());
