@@ -77,7 +77,7 @@ public class XL extends Application implements Environment {
       // This listener is called when the user presses the enter key in the editor.
       GridCell cell = currentCell.get();
       if (cell != null) {
-        model.update(cell.address.toString(), editor.getText().toUpperCase());
+        model.update(cell.address.toString(), editor.getText());
       }
     });
 

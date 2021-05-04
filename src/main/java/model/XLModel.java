@@ -42,7 +42,6 @@ public class XLModel {
     notifyObservers(address, c);
     LinkedList<String> visited = new LinkedList<>();
     checkReferences(address, visited);
-    System.out.println(contents);
   }
 
   public void clearCell(String address){
@@ -79,9 +78,8 @@ public class XLModel {
   }
 
   private void checkReferences(String currentAddress, LinkedList<String> visited){
-    System.out.println(currentAddress + " dwdwdw");
     for (Map.Entry<String, Cell> entry : contents.entrySet()){
-      if (entry.getValue().toString().contains(currentAddress) && !entry.getKey().equals(currentAddress)){
+      if (entry.getValue().toString().toUpperCase().contains(currentAddress) && !entry.getKey().toUpperCase().equals(currentAddress)){
           if (visited.contains(entry.getKey())){
             for (String s : visited){
               notifyObservers(s, new Comment(new ErrorResult("Circular Error").toString(), contents.get(s).toString()));
