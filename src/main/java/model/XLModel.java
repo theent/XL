@@ -84,14 +84,8 @@ public class XLModel {
           if (visited.contains(entry.getKey())){
             for (String s : visited){
               notifyObservers(s, new Comment(new ErrorResult("Circular Error").toString(), contents.get(s).toString()));
-              /*if (contents.containsKey(s)){
-                if (contents.get(s).toString().contains(currentAddress.toLowerCase())){
-                  notifyObservers(entry.getKey(), new Comment("Circular Error: " + currentAddress , entry.getValue().toString()));
-                }
-              }*/
             }
 
-            //notifyObservers(currentAddress, new Comment("Circular Error " + entry.getKey(), contents.get(currentAddress).toString()));
             return;
           }
 
