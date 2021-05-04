@@ -95,29 +95,66 @@ public class XLModel {
   }
 
   public void loadFile(File file) throws FileNotFoundException {
-    System.out.println("#### Load ####");
     XLBufferedReader reader = new XLBufferedReader(file);
     Map<String, String> tempMap = new HashMap<>();
-
     try {
       reader.load(tempMap);
     } catch (IOException e) {
       e.printStackTrace();
     }
+    addNumbers(tempMap);
 
-    for(Map.Entry<String, String> entry : tempMap.entrySet()) {
-      String address = entry.getKey();
-      char rowC  = address.charAt(0);
-      char colC  = address.charAt(1);
-      int row = rowC - 65;
-      int col = colC - 49;
-      System.out.println(row + " " + col);
-      update(new CellAddress(col, row), entry.getValue());
+  }
+
+  private void addNumbers(Map<String, String> tempMap) {
+    Map<String, String> newMap = new HashMap<>();
+    for (Map.Entry<String, String> entry : tempMap.entrySet()) {
+      if (entry.getValue().length() != 0) {
+        if (entry.getValue().charAt(0) != '#') {
+          if (!Character.isDigit(entry.getValue().charAt(0))) {
+            newMap.put(entry.getKey(), entry.getValue());
+          } else {
+            updateWithCell(entry);
+          }
+        }
+      }
+    }
+    addRef(newMap);
+  }
+
+  private void addRef(Map<String, String> newMap) {
+    Map<String, String> newMap2 = new HashMap<>();
+    for (Map.Entry<String, String> entry : newMap.entrySet()) {
+      if (checkIfValue(entry.getValue())) {
+        updateWithCell(entry);
+      } else {
+        newMap2.put(entry.getKey(), entry.getValue());
+      }
+    }
+    if (newMap2.size() != 0) {
+      addRef(newMap2);
     }
   }
 
+  private boolean checkIfValue(String text) {
+    try {
+      Cell c = exprParser(text);
+      return true;
+    } catch (Error e) {
+    }
+    return false;
+  }
+
+  private void updateWithCell(Map.Entry<String, String> entry) {
+    String address = entry.getKey();
+    char col1  = address.charAt(0);
+    char row1  = address.charAt(1);
+    int col = col1 - 65;
+    int row = row1 - 49;
+    update(new CellAddress(col, row), entry.getValue());
+  }
+
   public void saveFile(File file) {
-    System.out.println("#### Save ####");
     //TODO: implement this
     try {
       XLPrintStream printStream = new XLPrintStream(file.toString());
@@ -128,11 +165,4 @@ public class XLModel {
     }
   }
 
-  private Map<String, Double> formatMap(Map<String, Cell> prov) {
-    Map<String, Double> newOne = new HashMap<>();
-    for (Map.Entry<String, Cell> entry : prov.entrySet()) {
-      newOne.put(entry.getKey(), (double) entry.getValue().getContent());
-    }
-    return newOne;
-  }
 }
