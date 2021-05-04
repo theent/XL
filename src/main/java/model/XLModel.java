@@ -2,7 +2,6 @@ package model;
 
 import expr.*;
 import gui.XL;
-import util.XLException;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -42,7 +41,8 @@ public class XLModel {
       }
 
     notifyObservers(address.toString(), c);
-    checkReferences(address.toString());
+    LinkedList<String> visited = new LinkedList<>();
+    checkReferences(address.toString(), visited);
   }
 
   public void clearCell(String address){
@@ -65,7 +65,7 @@ public class XLModel {
 
   private Cell exprParser(String text) {
     try{
-      Expr expr =  parser.build(text); // felhantering, beroende på vad det är för typ av expression
+      Expr expr =  parser.build(text);
       ExprResult res = expr.value(xl);
       if (res.isError()){
         return new Comment(res.error(), text);
@@ -78,11 +78,26 @@ public class XLModel {
     }
   }
 
-  private void checkReferences(String currentAddress){
+  private void checkReferences(String currentAddress, LinkedList<String> visited){
     for (Map.Entry<String, Cell> entry : contents.entrySet()){
       if (entry.getValue().toString().contains(currentAddress.toLowerCase()) && !entry.getKey().equals(currentAddress.toLowerCase())){
+          if (visited.contains(entry.getKey())){
+            for (String s : visited){
+              notifyObservers(s, new Comment("Circular Error " + currentAddress, contents.get(s).toString()));
+              /*if (contents.containsKey(s)){
+                if (contents.get(s).toString().contains(currentAddress.toLowerCase())){
+                  notifyObservers(entry.getKey(), new Comment("Circular Error: " + currentAddress , entry.getValue().toString()));
+                }
+              }*/
+            }
+
+            //notifyObservers(currentAddress, new Comment("Circular Error " + entry.getKey(), contents.get(currentAddress).toString()));
+            return;
+          }
+
+          visited.add(entry.getKey());
           notifyObservers(entry.getKey(), exprParser(entry.getValue().toString()));
-          checkReferences(entry.getKey());
+          checkReferences(entry.getKey(), visited);
       }
     }
   }
