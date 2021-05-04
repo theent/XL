@@ -104,26 +104,24 @@ public class XLModel {
 
   public void loadFile(File file) throws FileNotFoundException {
     XLBufferedReader reader = new XLBufferedReader(file);
-    //Map<String, LinkedList<String>> tempMap = new LinkedHashMap<>();
+    Map<String, String> tempMap = new LinkedHashMap<>();
     try {
-      reader.load(this);
+      reader.load(tempMap);
     } catch (IOException e) {
       e.printStackTrace();
     }
 
-    //addNumbers(tempMap);
+    addNumbers(tempMap);
   }
 
-  private void addNumbers(Map<String, LinkedList<String>> tempMap) {
-    for (Map.Entry<String, LinkedList<String>> entry : tempMap.entrySet()) {
-      System.out.println(entry.getValue());
-      System.out.println(entry.getKey());
-
-      for (String s : entry.getValue()){
+  private void addNumbers(Map<String, String> tempMap) {
+    for (Map.Entry<String, String> entry : tempMap.entrySet()) {
+      update(entry.getKey(), entry.getValue());
+      /*for (String s : entry.getValue()){
         update(entry.getKey(), s);
       }
 
-      /*if (entry.getValue().length() != 0) {
+      if (entry.getValue().length() != 0) {
         if (entry.getValue().charAt(0) != '#') {
           if (!Character.isDigit(entry.getValue().charAt(0))) {
             newMap.put(entry.getKey(), entry.getValue());
