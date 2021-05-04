@@ -94,11 +94,11 @@ public class XLModel {
 
     for(Map.Entry<String, String> entry : tempMap.entrySet()) {
       String address = entry.getKey();
-      char rowC  = address.charAt(0);
-      char colC  = address.charAt(1);
-      int row = rowC - 65;
-      int col = colC - 49;
-      System.out.println(row + " " + col);
+      char col1  = address.charAt(0);
+      char row1  = address.charAt(1);
+      int col = col1 - 65;
+      int row = row1 - 49;
+      System.out.println(entry.getValue() + " " + col + " " + row);
       update(new CellAddress(col, row), entry.getValue());
     }
   }
