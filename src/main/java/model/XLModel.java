@@ -98,7 +98,8 @@ public class XLModel {
       char colC  = address.charAt(1);
       int row = rowC - 65;
       int col = colC - 49;
-      update(new CellAddress(row, col), entry.getValue());
+      System.out.println(row + " " + col);
+      update(new CellAddress(col, row), entry.getValue());
     }
   }
 

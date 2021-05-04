@@ -27,22 +27,10 @@ public class XLBufferedReader extends BufferedReader {
         String address = string.substring(0, i);
         String exp = string.substring(i + 1);
 
-
-//        Cell cell = null;
-//        if(exp.charAt(0) == '#') {
-//          cell = new Comment(exp.substring(1)) ;
-//        } else {
-//          ExprParser parser = new ExprParser();
-//          Expr expr = parser.build(exp);
-//          cell = new Expression(, exp);
-//        }
-
         System.out.print("#### " + address +  " ");
         System.out.println("#### " + exp +  " ####");
 
         map.put(address, exp);
-
-        // TODO
       }
     } catch (Exception e) {
       throw new XLException(e.getMessage());
