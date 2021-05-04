@@ -149,8 +149,15 @@ public class XLModel {
     String address = entry.getKey();
     char col1  = address.charAt(0);
     char row1  = address.charAt(1);
+    int row2=Integer.parseInt(address.substring(1));
+    int row;
     int col = col1 - 65;
-    int row = row1 - 49;
+    if(row2==10){
+      row=9;
+    } else {
+      row = row1 - 49;
+    }
+    System.out.println(col +" "+ row);
     update(new CellAddress(col, row), entry.getValue());
   }
 

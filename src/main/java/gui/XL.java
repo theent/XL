@@ -142,8 +142,7 @@ public class XL extends Application implements Environment {
     }
   }
   public String getAddress(){
-    GridCell cell = currentCell.get();
-    return cell.address.toString();
+    return currentCell.get().address.toString();
   }
   public void saveFile(File file) {
     model.saveFile(file);
