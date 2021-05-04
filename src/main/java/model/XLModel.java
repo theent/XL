@@ -77,7 +77,7 @@ public class XLModel {
       return new Comment(e.getLocalizedMessage(), text);
     }
   }
-//Hallå eller
+
   private void checkReferences(String currentAddress, LinkedList<String> visited){
     for (Map.Entry<String, Cell> entry : contents.entrySet()){
       if (entry.getValue().toString().contains(currentAddress.toLowerCase()) && !entry.getKey().equals(currentAddress.toLowerCase())){
