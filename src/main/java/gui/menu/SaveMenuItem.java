@@ -20,8 +20,7 @@ public class SaveMenuItem extends MenuItem {
 
 
         // TODO
-        System.out.println("#### " + "saveMenuItem" + " ####");
-        System.out.println("#### " + file.toString() + " ####");
+        System.out.println("#### " + "Pressed save" + " ####");
         xl.saveFile(file);
       }
     });

@@ -82,44 +82,42 @@ public class XLModel {
   }
 
   public void loadFile(File file) throws FileNotFoundException {
-    System.out.println("#### load ####");
-    System.out.println("#### " + file.toString() + " ####");
+    System.out.println("#### Load ####");
     XLBufferedReader reader = new XLBufferedReader(file);
+    Map<String, String> tempMap = new HashMap<>();
 
-    /*try {
-      reader.load(values);
+    try {
+      reader.load(tempMap);
     } catch (IOException e) {
       e.printStackTrace();
     }
 
-    for(Map.Entry<String, Double> entry : values.entrySet()) {
+    for(Map.Entry<String, String> entry : tempMap.entrySet()) {
       String address = entry.getKey();
       char rowC  = address.charAt(0);
       char colC  = address.charAt(1);
       int row = rowC - 65;
       int col = colC - 49;
-      update(new CellAddress(row, col), Double.toString(entry.getValue()), xl);
-    }*/
+      update(new CellAddress(row, col), entry.getValue());
+    }
   }
 
   public void saveFile(File file) {
     System.out.println("#### Save ####");
-    System.out.println("#### " + file.toString() + " ####");
     //TODO: implement this
     try {
       XLPrintStream printStream = new XLPrintStream(file.toString());
-      //printStream.save(values.entrySet());
-
+      printStream.save(contents.entrySet());
     } catch (FileNotFoundException e) {
       e.printStackTrace();
 
     }
   }
 
-  private Map<String, Double> formatMap(Map<CellAddress, String> prov) {
+  private Map<String, Double> formatMap(Map<String, Cell> prov) {
     Map<String, Double> newOne = new HashMap<>();
-    for (Map.Entry<CellAddress, String> entry : prov.entrySet()) {
-      newOne.put(entry.getKey().toString(), Double.parseDouble(entry.getValue()));
+    for (Map.Entry<String, Cell> entry : prov.entrySet()) {
+      newOne.put(entry.getKey(), (double) entry.getValue().getContent());
     }
     return newOne;
   }
