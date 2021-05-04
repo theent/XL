@@ -19,7 +19,7 @@ public class XLPrintStream extends PrintStream {
       print('=');
       println(entry.getValue());
       /*if(entry.getValue() instanceof Comment) {
-        println(entry.getValue());
+        println("#" + entry.getValue());
       } else {
         println(entry.getValue());
       }*/
