@@ -68,13 +68,13 @@ public class XLModel {
       Expr expr =  parser.build(text);
       ExprResult res = expr.value(xl);
       if (res.isError()){
-        return new Comment(res.error(), text);
+        return new Comment(res.toString(), text);
       } else{
         return new Expression(res.value(), text);
       }
 
     } catch (IOException e){
-      return new Comment(e.getLocalizedMessage(), text);
+      return new Comment(new ErrorResult(e.getMessage()).toString(), text);
     }
   }
 
@@ -83,7 +83,7 @@ public class XLModel {
       if (entry.getValue().toString().contains(currentAddress.toLowerCase()) && !entry.getKey().equals(currentAddress.toLowerCase())){
           if (visited.contains(entry.getKey())){
             for (String s : visited){
-              notifyObservers(s, new Comment("Circular Error " + currentAddress, contents.get(s).toString()));
+              notifyObservers(s, new Comment(new ErrorResult("Circular Error").toString(), contents.get(s).toString()));
               /*if (contents.containsKey(s)){
                 if (contents.get(s).toString().contains(currentAddress.toLowerCase())){
                   notifyObservers(entry.getKey(), new Comment("Circular Error: " + currentAddress , entry.getValue().toString()));
@@ -183,8 +183,6 @@ public class XLModel {
       printStream.save(contents.entrySet());
     } catch (FileNotFoundException e) {
       e.printStackTrace();
-
     }
   }
-
 }

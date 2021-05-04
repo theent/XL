@@ -158,7 +158,7 @@ public class XL extends Application implements Environment {
     if (value != null && value instanceof Expression){
       return new ValueResult((double) value.getContent());
     } else{
-      return new ErrorResult("Wrong value in reference: " + name);
+      return new ErrorResult("missing value " + name);
     }
   }
 }
