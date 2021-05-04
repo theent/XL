@@ -16,7 +16,7 @@ public class XLBufferedReader extends BufferedReader {
   }
 
   // TODO Change Object to something appropriate
-  public void load(/*Map<String, LinkedList<String>> map*/ XLModel model) throws IOException {
+  public void load(Map<String, LinkedList<String>> map) throws IOException {
     try {
       System.out.println("#### " + "Buffered Reader" +  " ####");
       while (ready()) {
@@ -28,9 +28,7 @@ public class XLBufferedReader extends BufferedReader {
         System.out.print("#### " + address +  " ");
         System.out.println("#### " + exp +  " ####");
 
-        model.update(address, exp);
-
-        //map.computeIfAbsent(address, k -> new LinkedList<>()).add(exp);
+        map.computeIfAbsent(address, k -> new LinkedList<>()).add(exp);
       }
     } catch (Exception e) {
       throw new XLException(e.getMessage());
