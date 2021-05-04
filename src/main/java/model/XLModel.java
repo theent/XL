@@ -2,6 +2,7 @@ package model;
 
 import expr.*;
 import gui.XL;
+import util.XLException;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -35,12 +36,13 @@ public class XLModel {
       if (text.length() == 0){
         c = new Empty();
       } else if (text.charAt(0) == '#'){
-        c = new Comment(text.substring(1));
+        c = new Comment(text.substring(1), text);
       } else{
         c = exprParser(text);
       }
 
     notifyObservers(address.toString(), c);
+    checkReferences(address.toString());
   }
 
   public void clearCell(String address){
@@ -61,17 +63,28 @@ public class XLModel {
     contents.put(address, c);
   }
 
-  // Får eventuellt ändras
   private Cell exprParser(String text) {
     try{
       Expr expr =  parser.build(text); // felhantering, beroende på vad det är för typ av expression
-      return new Expression(expr.value(xl).value(), text);
+      ExprResult res = expr.value(xl);
+      if (res.isError()){
+        return new Comment(res.error(), text);
+      } else{
+        return new Expression(res.value(), text);
+      }
 
     } catch (IOException e){
-      e.printStackTrace();
+      return new Comment(e.getLocalizedMessage(), text);
     }
+  }
 
-    return null;
+  private void checkReferences(String currentAddress){
+    for (Map.Entry<String, Cell> entry : contents.entrySet()){
+      if (entry.getValue().toString().contains(currentAddress.toLowerCase()) && !entry.getKey().equals(currentAddress.toLowerCase())){
+          notifyObservers(entry.getKey(), exprParser(entry.getValue().toString()));
+          checkReferences(entry.getKey());
+      }
+    }
   }
 
   public Cell getContent(String address){

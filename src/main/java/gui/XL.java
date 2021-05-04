@@ -126,7 +126,7 @@ public class XL extends Application implements Environment {
     stage.show();
   }
 
-  public void cellValueUpdated(String address, String value) {
+  private void cellValueUpdated(String address, String value) {
     GridCell cell = cells.get(address);
     if (cell != null) {
       cell.setText(value);
@@ -159,7 +159,7 @@ public class XL extends Application implements Environment {
     if (value != null && value instanceof Expression){
       return new ValueResult((double) value.getContent());
     } else{
-      return new ErrorResult("Error");
+      return new ErrorResult("Wrong value in reference: " + name);
     }
   }
 }

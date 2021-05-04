@@ -3,9 +3,11 @@ package model;
 public class Comment implements Cell {
 
     private String content;
+    private String text;
 
-    public Comment(String content) {
+    public Comment(String content, String text) {
         this.content = content;
+        this.text = text;
     }
 
     @Override
@@ -13,18 +15,8 @@ public class Comment implements Cell {
         return content;
     }
 
-   /* @Override
-    public void updateContent(Object content) {
-        if (content instanceof String){
-            String str = (String) content;
-            this.content = str;
-        }
-
-        throw new IllegalArgumentException();
-    }*/
-
     @Override
     public String toString() {
-        return content;
+        return text;
     }
 }
