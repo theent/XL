@@ -12,6 +12,8 @@ public class XLModel {
   public static final int COLUMNS = 10, ROWS = 10;
 
   // String = Adress, typ B3, Cell är vad addressen innehåller
+
+  //TODO kanske ändra till cellContents?
   private Map<String, Cell> contents;
   private ExprParser parser;
   private List<OnUpdateListener> observers = new ArrayList<>();
@@ -77,6 +79,7 @@ public class XLModel {
     }
   }
 
+  //TODO Kanske döpa om till något mer tydligt för cirkular error
   private void checkReferences(String currentAddress, LinkedList<String> visited){
     for (Map.Entry<String, Cell> entry : contents.entrySet()){
       if (entry.getValue().toString().toUpperCase().contains(currentAddress)){
@@ -148,6 +151,7 @@ public class XLModel {
     }
   }
 
+  //TODO döp om till något tydligare?
   private boolean checkIfValue(String text) {
     try {
       Cell c = exprParser(text);
@@ -157,6 +161,7 @@ public class XLModel {
     return false;
   }
 
+  //TODO döp om till något tydligare?
   private void updateWithCell(Map.Entry<String, String> entry) {
     String address = entry.getKey();
     char col1  = address.charAt(0);
