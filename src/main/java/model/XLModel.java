@@ -120,62 +120,7 @@ public class XLModel {
   private void addNumbers(Map<String, String> tempMap) {
     for (Map.Entry<String, String> entry : tempMap.entrySet()) {
       update(entry.getKey(), entry.getValue());
-      /*for (String s : entry.getValue()){
-        update(entry.getKey(), s);
-      }
-
-      if (entry.getValue().length() != 0) {
-        if (entry.getValue().charAt(0) != '#') {
-          if (!Character.isDigit(entry.getValue().charAt(0))) {
-            newMap.put(entry.getKey(), entry.getValue());
-          } else {
-            updateWithCell(entry);
-          }
-        }
-      }*/
     }
-    //addRef(newMap);
-  }
-
-  private void addRef(Map<String, String> newMap) {
-    Map<String, String> newMap2 = new HashMap<>();
-    for (Map.Entry<String, String> entry : newMap.entrySet()) {
-      if (checkIfValue(entry.getValue())) {
-        updateWithCell(entry);
-      } else {
-        newMap2.put(entry.getKey(), entry.getValue());
-      }
-    }
-    if (newMap2.size() != 0) {
-      addRef(newMap2);
-    }
-  }
-
-  //TODO döp om till något tydligare?
-  private boolean checkIfValue(String text) {
-    try {
-      Cell c = exprParser(text);
-      return true;
-    } catch (Error e) {
-    }
-    return false;
-  }
-
-  //TODO döp om till något tydligare?
-  private void updateWithCell(Map.Entry<String, String> entry) {
-    String address = entry.getKey();
-    char col1  = address.charAt(0);
-    char row1  = address.charAt(1);
-    int row2=Integer.parseInt(address.substring(1));
-    int row;
-    int col = col1 - 65;
-    if(row2==10){
-      row=9;
-    } else {
-      row = row1 - 49;
-    }
-    System.out.println(col +" "+ row);
-    //update(new CellAddress(col, row), entry.getValue());
   }
 
   public void saveFile(File file) {
