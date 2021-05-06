@@ -137,9 +137,11 @@ public class XL extends Application {
       e.printStackTrace();
     }
   }
+
   public String getAddress(){
     return currentCell.get().address.toString();
   }
+
   public void saveFile(File file) {
     model.saveFile(file);
   }
