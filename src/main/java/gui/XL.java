@@ -1,9 +1,5 @@
 package gui;
 
-import expr.Environment;
-import expr.ErrorResult;
-import expr.ExprResult;
-import expr.ValueResult;
 import gui.menu.XLMenu;
 import javafx.application.Application;
 import javafx.beans.property.ObjectProperty;
@@ -21,14 +17,11 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import model.CellAddress;
-import model.Expression;
-import model.OnUpdateListener;
 import model.XLModel;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 
 public class XL extends Application {

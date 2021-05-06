@@ -114,14 +114,14 @@ public class XLModel implements Environment {
 
   public void loadFile(File file) throws FileNotFoundException {
     XLBufferedReader reader = new XLBufferedReader(file);
-    Map<String, String> tempMap = new LinkedHashMap<>();
+    Map<String, String> loadRes = new LinkedHashMap<>();
     try {
-      reader.load(tempMap);
+      reader.load(loadRes);
     } catch (IOException e) {
       e.printStackTrace();
     }
 
-    for (Map.Entry<String, String> entry : tempMap.entrySet()) {
+    for (Map.Entry<String, String> entry : loadRes.entrySet()) {
       update(entry.getKey(), entry.getValue());
     }
   }
