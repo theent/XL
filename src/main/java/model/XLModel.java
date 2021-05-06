@@ -10,9 +10,7 @@ import java.util.*;
 public class XLModel implements Environment {
   public static final int COLUMNS = 10, ROWS = 10;
 
-  // String = Adress, typ B3, Cell är vad addressen innehåller
-
-  //TODO kanske ändra till cellContents?
+  // String = Adress, typ B3, CellContent är vad addressen innehåller
   private Map<String, CellContent> contents;
   private ExprParser parser;
   private List<OnUpdateListener> observers;
