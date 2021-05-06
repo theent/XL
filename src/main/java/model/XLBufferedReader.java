@@ -14,7 +14,6 @@ public class XLBufferedReader extends BufferedReader {
     super(new FileReader(file));
   }
 
-  // TODO Change Object to something appropriate
   public void load(Map<String, String> map) throws IOException {
     try {
       System.out.println("#### " + "Buffered Reader" +  " ####");
