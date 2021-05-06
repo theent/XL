@@ -17,10 +17,6 @@ public class SaveMenuItem extends MenuItem {
           .add(new FileChooser.ExtensionFilter("XL files (*.xl)", "*.xl"));
       File file = fileChooser.showSaveDialog(stage);
       if (file != null) {
-
-
-        // TODO
-        System.out.println("#### " + "Pressed save" + " ####");
         xl.saveFile(file);
       }
     });
