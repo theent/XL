@@ -15,11 +15,12 @@ public class XLModel implements Environment {
   //TODO kanske ändra till cellContents?
   private Map<String, CellContent> contents;
   private ExprParser parser;
-  private List<OnUpdateListener> observers = new ArrayList<>();
+  private List<OnUpdateListener> observers;
 
   public XLModel(){
     parser = new ExprParser();
     contents = new HashMap<>();
+    observers = new ArrayList<>();
   }
 
   /**
