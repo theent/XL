@@ -1,6 +1,6 @@
 package model;
 
-public interface Cell<T> {
+public interface CellContent<T> {
 
     public T getContent();
 

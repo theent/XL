@@ -1,6 +1,6 @@
 package model;
 
-public class Comment implements Cell {
+public class Comment implements CellContent {
 
     //TODO samma som i Expression
     private String content;
