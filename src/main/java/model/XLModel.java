@@ -10,16 +10,15 @@ import java.util.*;
 public class XLModel implements Environment {
   public static final int COLUMNS = 10, ROWS = 10;
 
-  // String = Adress, typ B3, Cell är vad addressen innehåller
-
-  //TODO kanske ändra till cellContents?
+  // String = Adress, typ B3, CellContent är vad addressen innehåller
   private Map<String, CellContent> contents;
   private ExprParser parser;
-  private List<OnUpdateListener> observers = new ArrayList<>();
+  private List<OnUpdateListener> observers;
 
   public XLModel(){
     parser = new ExprParser();
     contents = new HashMap<>();
+    observers = new ArrayList<>();
   }
 
   /**
@@ -114,14 +113,14 @@ public class XLModel implements Environment {
 
   public void loadFile(File file) throws FileNotFoundException {
     XLBufferedReader reader = new XLBufferedReader(file);
-    Map<String, String> tempMap = new LinkedHashMap<>();
+    Map<String, String> loadRes = new LinkedHashMap<>();
     try {
-      reader.load(tempMap);
+      reader.load(loadRes);
     } catch (IOException e) {
       e.printStackTrace();
     }
 
-    for (Map.Entry<String, String> entry : tempMap.entrySet()) {
+    for (Map.Entry<String, String> entry : loadRes.entrySet()) {
       update(entry.getKey(), entry.getValue());
     }
   }
