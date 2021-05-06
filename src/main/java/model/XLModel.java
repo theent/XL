@@ -88,7 +88,6 @@ public class XLModel implements Environment {
     }
   }
 
-  //TODO Kanske döpa om till något mer tydligt för cirkular error
   private void checkReferences(String currentAddress, LinkedList<String> visited){
     for (Map.Entry<String, Cell> entry : contents.entrySet()){
       if (entry.getValue().toString().toUpperCase().contains(currentAddress)){
@@ -129,7 +128,6 @@ public class XLModel implements Environment {
   }
 
   public void saveFile(File file) {
-    //TODO: implement this
     try {
       XLPrintStream printStream = new XLPrintStream(file.toString());
       printStream.save(contents.entrySet());
