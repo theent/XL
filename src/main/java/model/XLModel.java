@@ -13,7 +13,7 @@ public class XLModel implements Environment {
   // String = Adress, typ B3, CellContent är vad addressen innehåller
   private Map<String, CellContent> contents;
   private ExprParser parser;
-  private List<OnUpdateListener> observers;
+  private List<OnUpdateObserver> observers;
 
   public XLModel(){
     parser = new ExprParser();
@@ -47,13 +47,13 @@ public class XLModel implements Environment {
     notifyObservers(address, c);
   }
 
-  public void addObserver(OnUpdateListener o){
+  public void addObserver(OnUpdateObserver o){
     observers.add(o);
   }
 
   private void notifyObservers(String address, CellContent c){
     Map.Entry<String, CellContent> entry = new AbstractMap.SimpleEntry<>(address, c);
-    for (OnUpdateListener o : observers){
+    for (OnUpdateObserver o : observers){
       o.onUpdate(entry);
     }
 
