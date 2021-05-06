@@ -16,7 +16,6 @@ public class LoadMenuItem extends MenuItem {
           .add(new FileChooser.ExtensionFilter("XL files (*.xl)", "*.xl"));
       File file = fileChooser.showOpenDialog(stage);
       if (file != null) {
-        // TODO
         xl.loadFile(file);
       }
     });

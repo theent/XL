@@ -11,16 +11,11 @@ public class SaveMenuItem extends MenuItem {
   public SaveMenuItem(XL xl, Stage stage) {
     super("Save");
     setOnAction(event -> {
-
       FileChooser fileChooser = new FileChooser();
       fileChooser.getExtensionFilters()
           .add(new FileChooser.ExtensionFilter("XL files (*.xl)", "*.xl"));
       File file = fileChooser.showSaveDialog(stage);
       if (file != null) {
-
-
-        // TODO
-        System.out.println("#### " + "Pressed save" + " ####");
         xl.saveFile(file);
       }
     });
