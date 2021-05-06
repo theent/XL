@@ -2,6 +2,7 @@ package model;
 
 public class Comment implements Cell {
 
+    //TODO samma som i Expression
     private String content;
     private String text;
 
