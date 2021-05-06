@@ -16,18 +16,12 @@ public class XLBufferedReader extends BufferedReader {
 
   public void load(Map<String, String> map) throws IOException {
     try {
-      System.out.println("#### " + "Buffered Reader" +  " ####");
       while (ready()) {
         String string = readLine();
         int i = string.indexOf('=');
         String address = string.substring(0, i);
         String exp = string.substring(i + 1);
-
-        System.out.print("#### " + address +  " ");
-        System.out.println("#### " + exp +  " ####");
-
         map.put(address, exp);
-        //map.computeIfAbsent(address, k -> new LinkedList<>()).add(exp);
       }
     } catch (Exception e) {
       throw new XLException(e.getMessage());

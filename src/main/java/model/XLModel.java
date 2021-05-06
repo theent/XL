@@ -1,7 +1,6 @@
 package model;
 
 import expr.*;
-import gui.XL;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -14,7 +13,7 @@ public class XLModel implements Environment {
   // String = Adress, typ B3, Cell är vad addressen innehåller
 
   //TODO kanske ändra till cellContents?
-  private Map<String, Cell> contents;
+  private Map<String, CellContent> contents;
   private ExprParser parser;
   private List<OnUpdateListener> observers = new ArrayList<>();
 
@@ -30,7 +29,7 @@ public class XLModel implements Environment {
    * @param text    the new code for the cell - can be raw text (starting with #) or an expression
    */
   public void update(String address, String text) {
-    Cell c;
+    CellContent c;
       if (text.length() == 0){
         c = new Empty();
       } else if (text.charAt(0) == '#'){
@@ -45,7 +44,7 @@ public class XLModel implements Environment {
   }
 
   public void clearCell(String address){
-    Cell c = new Empty();
+    CellContent c = new Empty();
     notifyObservers(address, c);
   }
 
@@ -53,8 +52,8 @@ public class XLModel implements Environment {
     observers.add(o);
   }
 
-  private void notifyObservers(String address, Cell c){
-    Map.Entry<String, Cell> entry = new AbstractMap.SimpleEntry<>(address, c);
+  private void notifyObservers(String address, CellContent c){
+    Map.Entry<String, CellContent> entry = new AbstractMap.SimpleEntry<>(address, c);
     for (OnUpdateListener o : observers){
       o.onUpdate(entry);
     }
@@ -62,7 +61,7 @@ public class XLModel implements Environment {
     contents.put(address, c);
   }
 
-  private Cell exprParser(String text) {
+  private CellContent exprParser(String text) {
     try{
       Expr expr =  parser.build(text);
       ExprResult res = expr.value(this);
@@ -80,7 +79,7 @@ public class XLModel implements Environment {
   @Override
   public ExprResult value(String name) {
     name = name.toUpperCase();
-    Cell value = getContent(name);
+    CellContent value = getContent(name);
     if (value != null && value instanceof Expression){
       return new ValueResult((double) value.getContent());
     } else{
@@ -89,7 +88,7 @@ public class XLModel implements Environment {
   }
 
   private void checkReferences(String currentAddress, LinkedList<String> visited){
-    for (Map.Entry<String, Cell> entry : contents.entrySet()){
+    for (Map.Entry<String, CellContent> entry : contents.entrySet()){
       if (entry.getValue().toString().toUpperCase().contains(currentAddress)){
           if (visited.contains(entry.getKey())){
             for (String s : visited){
@@ -106,7 +105,7 @@ public class XLModel implements Environment {
     }
   }
 
-  public Cell getContent(String address){
+  public CellContent getContent(String address){
     if (contents.containsKey(address))
       return contents.get(address);
 

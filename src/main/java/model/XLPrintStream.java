@@ -10,9 +10,10 @@ public class XLPrintStream extends PrintStream {
     super(fileName);
   }
 
-  public void save(Set<Entry<String, Cell>> set) {
+  // TODO Change Object to something appropriate
+  public void save(Set<Entry<String, CellContent>> set) {
     System.out.println("#### Print Stream ####");
-    for (Entry<String, Cell> entry : set) {
+    for (Entry<String, CellContent> entry : set) {
       System.out.println(entry.getKey());
       print(entry.getKey());
       print('=');

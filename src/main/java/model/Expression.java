@@ -1,6 +1,6 @@
 package model;
 
-public class Expression implements Cell{
+public class Expression implements CellContent {
 
 
      //TODO döp om till exprContent kanske?
