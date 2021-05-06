@@ -62,8 +62,7 @@ public class XLModel implements Environment {
 
   private CellContent exprParser(String text) {
     try{
-      Expr expr =  parser.build(text);
-      ExprResult res = expr.value(this);
+      ExprResult res = parser.build(text).value(this);
       if (res.isError()){
         return new Comment(res.toString(), text);
       } else{
