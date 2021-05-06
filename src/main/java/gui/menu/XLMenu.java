@@ -6,8 +6,6 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.stage.Stage;
 
-import java.util.List;
-
 public class XLMenu extends MenuBar {
   public XLMenu(XL xl, Stage stage) {
     Menu fileMenu = new Menu("File");
@@ -35,5 +33,4 @@ public class XLMenu extends MenuBar {
     editMenu.getItems().addAll(clear, clearAll);
     getMenus().addAll(fileMenu, editMenu);
   }
-
 }
