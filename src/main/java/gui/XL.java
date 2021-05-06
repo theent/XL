@@ -39,7 +39,7 @@ public class XL extends Application {
     currentCell.set(cell);
   }
 
-  @Override public void start(Stage stage) throws Exception {
+  @Override public void start(Stage stage) {
     GridPane sheet = new GridPane();
     for (int c = 0; c < XLModel.COLUMNS; ++c) {
       Label lbl = new ColumnHeader(c);
