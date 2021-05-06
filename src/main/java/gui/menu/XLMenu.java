@@ -33,5 +33,4 @@ public class XLMenu extends MenuBar {
     editMenu.getItems().addAll(clear, clearAll);
     getMenus().addAll(fileMenu, editMenu);
   }
-
 }
