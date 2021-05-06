@@ -31,10 +31,10 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-public class XL extends Application implements Environment {
+public class XL extends Application {
   ObjectProperty<GridCell> currentCell = new SimpleObjectProperty<>(); //ObjectProperty extends Observable
   Map<String, GridCell> cells = new HashMap<>();
-  XLModel model = new XLModel(this);
+  XLModel model = new XLModel();
 
   public XL() {
     // TODO: add listener(s) for model?
@@ -153,14 +153,4 @@ public class XL extends Application implements Environment {
     model.clearCell(adress);
   }
 
-  @Override
-  public ExprResult value(String name) {
-    name = name.toUpperCase();
-    var value = model.getContent(name);
-    if (value != null && value instanceof Expression){
-      return new ValueResult((double) value.getContent());
-    } else{
-      return new ErrorResult("missing value " + name);
-    }
-  }
 }

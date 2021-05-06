@@ -8,7 +8,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.*;
 
-public class XLModel {
+public class XLModel implements Environment {
   public static final int COLUMNS = 10, ROWS = 10;
 
   // String = Adress, typ B3, Cell är vad addressen innehåller
@@ -17,12 +17,10 @@ public class XLModel {
   private Map<String, Cell> contents;
   private ExprParser parser;
   private List<OnUpdateListener> observers = new ArrayList<>();
-  private XL xl;
 
-  public XLModel(XL xl){
+  public XLModel(){
     parser = new ExprParser();
     contents = new HashMap<>();
-    this.xl = xl;
   }
 
   /**
@@ -67,7 +65,7 @@ public class XLModel {
   private Cell exprParser(String text) {
     try{
       Expr expr =  parser.build(text);
-      ExprResult res = expr.value(xl);
+      ExprResult res = expr.value(this);
       if (res.isError()){
         return new Comment(res.toString(), text);
       } else{
@@ -76,6 +74,17 @@ public class XLModel {
 
     } catch (IOException e){
       return new Comment(new ErrorResult(e.getMessage()).toString(), text);
+    }
+  }
+
+  @Override
+  public ExprResult value(String name) {
+    name = name.toUpperCase();
+    Cell value = getContent(name);
+    if (value != null && value instanceof Expression){
+      return new ValueResult((double) value.getContent());
+    } else{
+      return new ErrorResult("missing value " + name);
     }
   }
 
