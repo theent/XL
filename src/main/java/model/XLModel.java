@@ -123,10 +123,6 @@ public class XLModel implements Environment {
       e.printStackTrace();
     }
 
-    addNumbers(tempMap);
-  }
-
-  private void addNumbers(Map<String, String> tempMap) {
     for (Map.Entry<String, String> entry : tempMap.entrySet()) {
       update(entry.getKey(), entry.getValue());
     }
