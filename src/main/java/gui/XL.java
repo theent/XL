@@ -32,12 +32,14 @@ import java.util.Locale;
 import java.util.Map;
 
 public class XL extends Application {
-  ObjectProperty<GridCell> currentCell = new SimpleObjectProperty<>(); //ObjectProperty extends Observable
-  Map<String, GridCell> cells = new HashMap<>();
-  XLModel model = new XLModel();
+  ObjectProperty<GridCell> currentCell;
+  Map<String, GridCell> cells;
+  XLModel model;
 
   public XL() {
-    // TODO: add listener(s) for model?
+    model = new XLModel();
+    cells = new HashMap<>();
+    currentCell = new SimpleObjectProperty<>(); //ObjectProperty extends Observable
   }
 
   public void onCellSelected(GridCell cell) {
