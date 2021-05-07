@@ -10,7 +10,7 @@ public class XLModel implements Environment {
   public static final int COLUMNS = 10, ROWS = 10;
 
   // String = Adress, typ B3, CellContent är vad addressen innehåller
-  private final Map<String, CellContent> contents;
+  private final Map<String, CellContent> contents;      //Kvalificerad association
   private final ExprParser parser;
   private final List<OnUpdateObserver> observers;
 
@@ -136,5 +136,4 @@ public class XLModel implements Environment {
       e.printStackTrace();
     }
   }
-
 }
