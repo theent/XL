@@ -1,7 +1,6 @@
 package model;
 
 import expr.*;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -11,9 +10,9 @@ public class XLModel implements Environment {
   public static final int COLUMNS = 10, ROWS = 10;
 
   // String = Adress, typ B3, CellContent är vad addressen innehåller
-  private Map<String, CellContent> contents;
-  private ExprParser parser;
-  private List<OnUpdateObserver> observers;
+  private final Map<String, CellContent> contents;
+  private final ExprParser parser;
+  private final List<OnUpdateObserver> observers;
 
   public XLModel(){
     parser = new ExprParser();
@@ -78,7 +77,7 @@ public class XLModel implements Environment {
   public ExprResult value(String name) {
     name = name.toUpperCase();
     CellContent value = getContent(name);
-    if (value != null && value instanceof Expression){
+    if (value instanceof Expression){
       return new ValueResult((double) value.getContent());
     } else{
       return new ErrorResult("missing value " + name);
@@ -113,10 +112,15 @@ public class XLModel implements Environment {
   public void loadFile(File file) throws FileNotFoundException {
     XLBufferedReader reader = new XLBufferedReader(file);
     Map<String, String> loadRes = new LinkedHashMap<>();
+
     try {
       reader.load(loadRes);
     } catch (IOException e) {
       e.printStackTrace();
+    }
+
+    for(var cont : contents.entrySet()) {
+      clearCell(cont.getKey());
     }
 
     for (Map.Entry<String, String> entry : loadRes.entrySet()) {
@@ -132,4 +136,5 @@ public class XLModel implements Environment {
       e.printStackTrace();
     }
   }
+
 }

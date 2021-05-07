@@ -13,7 +13,7 @@ public class Expression implements CellContent {
           this.text = text;
      }
 
-     public Object getContent() {
+     public Double getContent() {
           return content;
      }
 
