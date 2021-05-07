@@ -1,8 +1,8 @@
 package model;
 
-public interface CellContent<T> {
+public interface CellContent {
 
-    public T getContent();
+    public Object getContent();
 
     public String toString();
 }
