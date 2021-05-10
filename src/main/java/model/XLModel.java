@@ -29,8 +29,7 @@ public class XLModel implements Environment {
    */
   public void update(String address, String text) {
     notifyObservers(address, evaluateExpr(text));
-    LinkedList<String> visited = new LinkedList<>();
-    checkReferences(address, visited);
+    checkReferences(address, new LinkedList<>());
   }
 
   private Cell evaluateExpr(String text){
@@ -84,17 +83,17 @@ public class XLModel implements Environment {
     for (Map.Entry<String, Cell> entry : contents.entrySet()){
       if (entry.getValue().expr().toUpperCase().contains(currentAddress)){
           if (visited.contains(entry.getKey())){
-            for (String s : visited){
+            //for (String s : visited){
               //notifyObservers(s, new TextCell(contents.get(s).expr(), new ErrorResult("Circular Error").toString()));
-              System.out.println("Address: " + s);
-            }
+              //System.out.println("Address: " + s);
+            //}
 
             return;
           }
 
-          visited.add(entry.getKey());
-          notifyObservers(entry.getKey(), evaluateExpr(entry.getValue().expr()));
-          checkReferences(entry.getKey(), visited);
+        visited.add(entry.getKey());
+        notifyObservers(entry.getKey(), evaluateExpr(entry.getValue().expr()));
+        checkReferences(entry.getKey(), visited);
       }
     }
   }
