@@ -33,18 +33,4 @@ public class XLMenu extends MenuBar {
     editMenu.getItems().addAll(clear, clearAll);
     getMenus().addAll(fileMenu, editMenu);
   }
-
-  private void clearAll(XL xl) {
-    String letters = "ABCDEFGHIJ";
-    for(int j = 0; j <10; j++) {
-      for(int i = 0; i < 10; i++) {
-        String adress = letters.substring(i, i + 1) + (j + 1);
-        xl.clearCell(adress);
-      }
-    }
-
-
-  }
-
-
 }
