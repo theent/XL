@@ -77,7 +77,7 @@ public class XL extends Application {
     });
 
     model.addObserver(entry ->{
-        cellValueUpdated(entry.getKey(), entry.getValue().getContent().toString());
+        cellValueUpdated(entry.getKey(), entry.getValue().toString());
     });
 
     currentCell.addListener((observable, oldValue, newValue) -> {
@@ -88,7 +88,7 @@ public class XL extends Application {
       if (newValue != null) {
         addressLbl.setText(newValue.address.toString() + " =");
         editor.setDisable(false);
-        editor.setText(model.getContent(newValue.address.toString()).toString());
+        editor.setText(model.getCell(newValue.address.toString()).expr());
         editor.requestFocus();
       } else {
         addressLbl.setText("?? =");
