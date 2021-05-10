@@ -83,10 +83,11 @@ public class XLModel implements Environment {
     for (Map.Entry<String, Cell> entry : contents.entrySet()){
       if (entry.getValue().expr().toUpperCase().contains(currentAddress)){
           if (visited.contains(entry.getKey())){
-            //for (String s : visited){
-              //notifyObservers(s, new TextCell(contents.get(s).expr(), new ErrorResult("Circular Error").toString()));
-              //System.out.println("Address: " + s);
-            //}
+            // Denna delen funkar inte som är utkommenterad, vi måste lösa det på något sätt när vi
+            // parsar uttrycket.
+            /*for (String s : visited){
+                notifyObservers(s, new TextCell(contents.get(s).expr(), new ErrorResult("Circular Error").toString()));
+            }*/
 
             return;
           }
