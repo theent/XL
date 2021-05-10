@@ -4,7 +4,6 @@ import expr.Environment;
 import expr.ErrorResult;
 import expr.ExprParser;
 import expr.ExprResult;
-import util.XLException;
 
 import java.io.IOException;
 
@@ -32,8 +31,6 @@ public class ExprCell implements Cell {
      public void evaluate(Environment e) {
           if (expr.length() == 0){
                throw new EmptyError(expr);
-          } else if (expr.charAt(0) == '#'){
-               throw  new Error(expr.substring(1));
           }
 
           try{

@@ -34,6 +34,9 @@ public class XLModel implements Environment {
   }
 
   private Cell evaluateExpr(String text){
+    if (text.length() > 0 && text.charAt(0) == '#')
+      return new TextCell(text, text.substring(1));
+
     Cell newCell = new ExprCell(text);
     try{
       newCell.evaluate(this);
@@ -85,7 +88,6 @@ public class XLModel implements Environment {
               //notifyObservers(s, new TextCell(contents.get(s).expr(), new ErrorResult("Circular Error").toString()));
               System.out.println("Address: " + s);
             }
-
 
             return;
           }
