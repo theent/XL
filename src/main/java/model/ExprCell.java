@@ -32,14 +32,11 @@ public class ExprCell implements Cell {
           if (expr.length() == 0){
                throw new EmptyError(expr);
           }
+
           try{
                ExprResult res = parser.build(expr).value(e);
                if (res.isError()){
-                    if (res.error().matches("Circular Error")){
-                         throw new CircularError(res.toString());
-                    } else{
-                         throw new Error(res.toString());
-                    }
+                    throw new Error(res.toString());
                } else{
                     this.value = res.value();
                }

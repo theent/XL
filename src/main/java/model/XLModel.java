@@ -36,7 +36,7 @@ public class XLModel implements Environment {
       evaluateExpr(text, address);
     }
 
-    checkReferences(address, new LinkedList<>());
+    checkReferences(address, new ArrayList<>());
   }
 
   private void evaluateExpr(String text, String address){
@@ -47,8 +47,6 @@ public class XLModel implements Environment {
     } catch (Error e){
       if (e instanceof EmptyError){
         newCell = new EmptyCell();
-      } else if (e instanceof CircularError){
-        newCell = new CircularCell(text, e.getMessage());
       } else{
         newCell = new TextCell(text, e.getMessage());
       }
@@ -88,7 +86,7 @@ public class XLModel implements Environment {
     }
   }
 
-  private void checkReferences(String currentAddress, LinkedList<String> visited){
+  private void checkReferences(String currentAddress, ArrayList<String> visited){
     for (Map.Entry<String, Cell> entry : contents.entrySet()){
       if (entry.getValue().expr().toUpperCase().contains(currentAddress)){
           if (visited.contains(entry.getKey())){
@@ -97,7 +95,7 @@ public class XLModel implements Environment {
             for (String s : visited){
               evaluateExpr(contents.get(s).expr(), s);
               //System.out.println("Address: " + s);
-              //notifyObservers(s, new TextCell(contents.get(s).expr(), new ErrorResult("Circular Error").toString()));
+              //contents.put(s, new CircularCell());
             }
 
             return;

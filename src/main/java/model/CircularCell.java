@@ -4,22 +4,9 @@ import expr.Environment;
 
 public class CircularCell implements Cell{
 
-    private String content;
-    private String expr;
-
-    public CircularCell(){
-        this.content = null;
-        this.expr = null;
-    }
-
-    public CircularCell(String expr, String content){
-        this.expr = expr;
-        this.content = content;
-    }
-
     @Override
     public String expr() {
-        return expr;
+        return "";
     }
 
     @Override
@@ -34,6 +21,6 @@ public class CircularCell implements Cell{
 
     @Override
     public String toString(){
-        return content;
+        return "";
     }
 }
