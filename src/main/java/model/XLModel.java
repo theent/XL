@@ -48,7 +48,7 @@ public class XLModel implements Environment {
     ExprResult res = newCell.evaluate(this);
 
     if (res.isError()){
-      newCell = new ErrorCell(text , res.error());
+      newCell = new ErrorCell(text , res.error().contains("Missing value") ? "Circular Error" : res.error());
     }
 
     contents.put(address, newCell);

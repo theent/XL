@@ -14,9 +14,4 @@ public class CircularCell implements Cell{
     public ExprResult evaluate(Environment e){
         throw new Error("Circular Error");
     }
-
-    @Override
-    public String toString(){
-        return "";
-    }
 }

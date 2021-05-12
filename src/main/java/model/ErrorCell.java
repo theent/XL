@@ -22,9 +22,4 @@ public class ErrorCell implements Cell{
     public ExprResult evaluate(Environment env) {
         return new ErrorResult(error);
     }
-
-    @Override
-    public String toString(){
-        return expr;
-    }
 }
