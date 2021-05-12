@@ -39,7 +39,7 @@ public class XLModel implements Environment {
       evaluateExpr(text, address);
     }
 
-    checkReferences(address, new ArrayList<>());
+    checkReferences(address, new HashSet<>());
   }
 
   private void evaluateExpr(String text, String address){
@@ -49,13 +49,8 @@ public class XLModel implements Environment {
 
     String value;
     if (res.isError()){
-      if (res.error().contains("Circular")){
-        newCell = new CircularCell(text, res.toString());
-      } else {
-        newCell = new TextCell(text, res.toString());
-      }
-
-      value = newCell.toString();
+      newCell = new ErrorCell(text , res.error());
+      value = res.toString();
     } else{
       value = Double.toString(res.value());
     }
@@ -93,16 +88,20 @@ public class XLModel implements Environment {
     }
   }
 
-  private void checkReferences(String currentAddress, ArrayList<String> visited){
+  private void checkReferences(String currentAddress, HashSet<String> visited){
     for (Map.Entry<String, Cell> entry : contents.entrySet()){
       if (entry.getValue().expr().toUpperCase().contains(currentAddress)){
           if (visited.contains(entry.getKey())){
+            for (String s : visited){
+              evaluateExpr(contents.get(s).expr(), s);
+            }
+
             return;
           }
 
         visited.add(entry.getKey());
-        evaluateExpr(entry.getValue().expr(), entry.getKey());
         checkReferences(entry.getKey(), visited);
+        evaluateExpr(entry.getValue().expr(), entry.getKey());
       }
     }
   }

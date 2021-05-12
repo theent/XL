@@ -1,10 +1,7 @@
 package model;
 
 import expr.Environment;
-import expr.ErrorResult;
 import expr.ExprResult;
-
-import java.io.IOException;
 
 public class CircularCell implements Cell{
 

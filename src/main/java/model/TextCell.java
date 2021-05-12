@@ -1,10 +1,7 @@
 package model;
 
 import expr.Environment;
-import expr.ErrorResult;
 import expr.ExprResult;
-
-import java.io.IOException;
 
 public class TextCell implements Cell {
     private final String content;
@@ -21,7 +18,7 @@ public class TextCell implements Cell {
     }
 
     @Override
-    public ExprResult evaluate(Environment e){
+    public ExprResult evaluate(Environment env){
         throw new Error("Missing value");
     }
 

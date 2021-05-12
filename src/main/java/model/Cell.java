@@ -9,7 +9,7 @@ public interface Cell {
 
     String expr();
 
-    ExprResult evaluate(Environment e);
+    ExprResult evaluate(Environment env);
 
     String toString();
 }
