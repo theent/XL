@@ -47,6 +47,8 @@ public class XLModel implements Environment {
     } catch (Error e){
       if (e instanceof EmptyError){
         newCell = new EmptyCell();
+      } else if (e instanceof CircularError){
+        newCell = new CircularCell(text, e.getMessage());
       } else{
         newCell = new TextCell(text, e.getMessage());
       }
