@@ -77,7 +77,7 @@ public class XL extends Application {
     });
 
     model.addObserver(entry ->{
-        cellValueUpdated(entry.getKey(), entry.getValue().toString());
+       cellValueUpdated(entry.getKey(), entry.getValue());
     });
 
     currentCell.addListener((observable, oldValue, newValue) -> {
@@ -145,6 +145,10 @@ public class XL extends Application {
 
   public void clearCurrent(){
     model.clearCell(currentCell.get().address.toString());
+    GridCell cell = currentCell.get();
+    if (cell != null) {
+      model.update(cell.address.toString(), "");
+    }
   }
 
   public void clearCell(String adress) {

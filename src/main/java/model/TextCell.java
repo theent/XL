@@ -1,6 +1,10 @@
 package model;
 
 import expr.Environment;
+import expr.ErrorResult;
+import expr.ExprResult;
+
+import java.io.IOException;
 
 public class TextCell implements Cell {
     private final String content;
@@ -17,13 +21,8 @@ public class TextCell implements Cell {
     }
 
     @Override
-    public Double value() {
-        throw new Error("Missing value");
-    }
-
-    @Override
-    public void evaluate(Environment e) {
-        throw new UnsupportedOperationException();
+    public ExprResult evaluate(Environment e) throws IOException {
+        throw new IOException("Missing value");
     }
 
     @Override

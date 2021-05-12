@@ -12,11 +12,9 @@ public class XLModel implements Environment {
 
   // String = Adress, typ B3, CellContent är vad addressen innehåller
   private final Map<String, Cell> contents;      //Kvalificerad association
-  private final ExprParser parser;
   private final List<OnUpdateObserver> observers;
 
   public XLModel(){
-    parser = new ExprParser();
     contents = new HashMap<>();
     observers = new ArrayList<>();
   }
@@ -28,10 +26,15 @@ public class XLModel implements Environment {
    * @param text    the new code for the cell - can be raw text (starting with #) or an expression
    */
   public void update(String address, String text) {
-    if (text.length() > 0 && text.charAt(0) == '#'){
-      TextCell tc = new TextCell(text, text.substring(1));
-      contents.put(address, tc);
-      notifyObservers(address, tc);
+
+    if (text.length() == 0){
+      EmptyCell eC = new EmptyCell();
+      contents.put(address, eC);
+      notifyObservers(address, eC.toString());
+    } else if (text.charAt(0) == '#'){
+      TextCell tC = new TextCell(text, text.substring(1));
+      contents.put(address, tC);
+      notifyObservers(address, tC.toString());
     } else{
       evaluateExpr(text, address);
     }
@@ -42,34 +45,43 @@ public class XLModel implements Environment {
   private void evaluateExpr(String text, String address){
     Cell newCell = new ExprCell(text);
     contents.put(address, new CircularCell());
+    ExprResult res;
+
     try{
-      newCell.evaluate(this);
-    } catch (Error e){
-      if (e instanceof EmptyError){
-        newCell = new EmptyCell();
-      } else if (e instanceof CircularError){
-        newCell = new CircularCell(text, e.getMessage());
+      res = newCell.evaluate(this);
+    } catch (IOException e){
+      res = new ErrorResult(e.getMessage());
+    }
+
+    String value;
+    if (res.isError()){
+      if (res.error().contains("Circular Error")){
+        newCell = new CircularCell(text, res.toString());
       } else{
-        newCell = new TextCell(text, e.getMessage());
+        newCell = new TextCell(text, res.toString());
       }
+
+      value = newCell.toString();
+    } else{
+      value = Double.toString(res.value());
     }
 
     contents.put(address, newCell);
-    notifyObservers(address, newCell);
+    notifyObservers(address, value);
   }
 
   public void clearCell(String address){
     Cell c = new EmptyCell();
     contents.put(address, c);
-    notifyObservers(address, c);
+    notifyObservers(address, c.toString());
   }
 
   public void addObserver(OnUpdateObserver o){
     observers.add(o);
   }
 
-  private void notifyObservers(String address, Cell c){
-    Map.Entry<String, Cell> entry = new AbstractMap.SimpleEntry<>(address, c);
+  private void notifyObservers(String address, String value){
+    Map.Entry<String, String> entry = new AbstractMap.SimpleEntry<>(address, value);
     for (OnUpdateObserver o : observers){
       o.onUpdate(entry);
     }
@@ -78,13 +90,11 @@ public class XLModel implements Environment {
   @Override
   public ExprResult value(String name) {
     name = name.toUpperCase();
-    Cell value = getCell(name);
-    if (value instanceof ExprCell){
-      return new ValueResult((value.value()));
-    } else if (value instanceof CircularCell){
-      return new ErrorResult("Circular Error");
-    } else{
-      return new ErrorResult("missing value " + name);
+    Cell cell = getCell(name);
+    try{
+      return cell.evaluate(this);
+    } catch (IOException e){
+      return new ErrorResult(e.getMessage() + " " + name);
     }
   }
 
@@ -92,14 +102,6 @@ public class XLModel implements Environment {
     for (Map.Entry<String, Cell> entry : contents.entrySet()){
       if (entry.getValue().expr().toUpperCase().contains(currentAddress)){
           if (visited.contains(entry.getKey())){
-            // Denna delen funkar inte som är utkommenterad, vi måste lösa det på något sätt när vi
-            // parsar uttrycket.
-            for (String s : visited){
-              evaluateExpr(contents.get(s).expr(), s);
-              //System.out.println("Address: " + s);
-              //contents.put(s, new CircularCell());
-            }
-
             return;
           }
 
@@ -119,20 +121,15 @@ public class XLModel implements Environment {
 
   public void loadFile(File file) throws FileNotFoundException {
     XLBufferedReader reader = new XLBufferedReader(file);
-    Map<String, String> loadRes = new LinkedHashMap<>();
-
-    try {
-      reader.load(loadRes);
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
 
     for(Map.Entry<String, Cell> entry : contents.entrySet()) {
       clearCell(entry.getKey());
     }
 
-    for (Map.Entry<String, String> entry : loadRes.entrySet()) {
-      update(entry.getKey(), entry.getValue());
+    try {
+      reader.load(this);
+    } catch (IOException e) {
+      e.printStackTrace();
     }
   }
 

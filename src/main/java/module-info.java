@@ -5,4 +5,5 @@ module xl {
   exports gui;
   exports model;
   exports expr;
+    exports util;
 }
