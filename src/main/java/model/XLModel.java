@@ -47,16 +47,12 @@ public class XLModel implements Environment {
     contents.put(address, new CircularCell());
     ExprResult res = newCell.evaluate(this);
 
-    String value;
     if (res.isError()){
       newCell = new ErrorCell(text , res.error());
-      value = res.toString();
-    } else{
-      value = Double.toString(res.value());
     }
 
     contents.put(address, newCell);
-    notifyObservers(address, value);
+    notifyObservers(address, !res.isError() ? Double.toString(res.value()) : res.toString());
   }
 
   public void clearCell(String address){
@@ -99,8 +95,8 @@ public class XLModel implements Environment {
           return;
         }
 
-        checkReferences(entry.getKey(), visited);
         evaluateExpr(entry.getValue().expr(), entry.getKey());
+        checkReferences(entry.getKey(), visited);
       }
     }
   }

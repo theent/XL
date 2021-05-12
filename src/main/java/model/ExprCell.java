@@ -9,6 +9,7 @@ public class ExprCell implements Cell {
 
      public ExprCell(String expr) {
           this.expr = expr;
+
           try {
                ex = new ExprParser().build(expr);
           } catch (IOException e) {
