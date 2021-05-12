@@ -12,11 +12,9 @@ public class XLModel implements Environment {
 
   // String = Adress, typ B3, CellContent är vad addressen innehåller
   private final Map<String, Cell> contents;      //Kvalificerad association
-  private final ExprParser parser;
   private final List<OnUpdateObserver> observers;
 
   public XLModel(){
-    parser = new ExprParser();
     contents = new HashMap<>();
     observers = new ArrayList<>();
   }
@@ -31,7 +29,7 @@ public class XLModel implements Environment {
     if (text.length() > 0 && text.charAt(0) == '#'){
       TextCell tc = new TextCell(text, text.substring(1));
       contents.put(address, tc);
-      notifyObservers(address, tc);
+      notifyObservers(address, tc.toString());
     } else{
       evaluateExpr(text, address);
     }
@@ -41,35 +39,41 @@ public class XLModel implements Environment {
 
   private void evaluateExpr(String text, String address){
     Cell newCell = new ExprCell(text);
-    contents.put(address, new CircularCell());
+    String value;
     try{
-      newCell.evaluate(this);
+      value = newCell.value(this).toString();
+    } catch (IOException e){
+      newCell = new TextCell(text, e.getMessage());
+      value = newCell.toString();
     } catch (Error e){
       if (e instanceof EmptyError){
         newCell = new EmptyCell();
+        value = "";
       } else if (e instanceof CircularError){
         newCell = new CircularCell(text, e.getMessage());
+        value = newCell.toString();
       } else{
         newCell = new TextCell(text, e.getMessage());
+        value = newCell.toString();
       }
     }
 
     contents.put(address, newCell);
-    notifyObservers(address, newCell);
+    notifyObservers(address, value);
   }
 
   public void clearCell(String address){
     Cell c = new EmptyCell();
     contents.put(address, c);
-    notifyObservers(address, c);
+    notifyObservers(address, c.toString());
   }
 
   public void addObserver(OnUpdateObserver o){
     observers.add(o);
   }
 
-  private void notifyObservers(String address, Cell c){
-    Map.Entry<String, Cell> entry = new AbstractMap.SimpleEntry<>(address, c);
+  private void notifyObservers(String address, String value){
+    Map.Entry<String, String> entry = new AbstractMap.SimpleEntry<>(address, value);
     for (OnUpdateObserver o : observers){
       o.onUpdate(entry);
     }
@@ -79,12 +83,10 @@ public class XLModel implements Environment {
   public ExprResult value(String name) {
     name = name.toUpperCase();
     Cell value = getCell(name);
-    if (value instanceof ExprCell){
-      return new ValueResult((value.value()));
-    } else if (value instanceof CircularCell){
-      return new ErrorResult("Circular Error");
-    } else{
-      return new ErrorResult("missing value " + name);
+    try{
+      return new ValueResult((value.value(this)));
+    } catch (IOException e){
+      return new ErrorResult(e.getMessage());
     }
   }
 

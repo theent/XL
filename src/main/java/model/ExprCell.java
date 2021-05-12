@@ -8,7 +8,6 @@ import expr.ExprResult;
 import java.io.IOException;
 
 public class ExprCell implements Cell {
-     private double value;
      private final String expr;
      private ExprParser parser;
 
@@ -23,11 +22,11 @@ public class ExprCell implements Cell {
      }
 
      @Override
-     public Double value() {
-          return value;
+     public Double value(Environment e) throws IOException {
+          return parser.build(expr).value(e).value();
      }
 
-     @Override
+    /* @Override
      public void evaluate(Environment e) {
           if (expr.length() == 0){
                throw new EmptyError(expr);
@@ -43,10 +42,5 @@ public class ExprCell implements Cell {
           } catch (IOException ex){
                throw new Error(new ErrorResult(ex.getMessage()).toString());
           }
-     }
-
-     @Override
-     public String toString() {
-          return Double.toString(value);
-     }
+     }*/
 }

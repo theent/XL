@@ -1,6 +1,8 @@
 package model;
 
-public class CircularError extends Error{
+import java.io.IOException;
+
+public class CircularError extends Error {
     public CircularError (String text){
         super(text);
     }

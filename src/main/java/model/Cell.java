@@ -2,13 +2,13 @@ package model;
 
 import expr.Environment;
 
+import java.io.IOException;
+
 public interface Cell {
 
     String expr();
 
-    Double value();
-
-    void evaluate(Environment e);
+    Double value(Environment e) throws IOException;
 
     String toString();
 }

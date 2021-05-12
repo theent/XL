@@ -77,7 +77,7 @@ public class XL extends Application {
     });
 
     model.addObserver(entry ->{
-        cellValueUpdated(entry.getKey(), entry.getValue().toString());
+       cellValueUpdated(entry.getKey(), entry.getValue());
     });
 
     currentCell.addListener((observable, oldValue, newValue) -> {

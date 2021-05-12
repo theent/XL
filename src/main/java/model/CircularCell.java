@@ -2,6 +2,8 @@ package model;
 
 import expr.Environment;
 
+import java.io.IOException;
+
 public class CircularCell implements Cell{
 
     private String expr;
@@ -23,13 +25,8 @@ public class CircularCell implements Cell{
     }
 
     @Override
-    public Double value() {
+    public Double value(Environment e) throws IOException {
         throw new CircularError("Circular Error");
-    }
-
-    @Override
-    public void evaluate(Environment e) {
-        throw new UnsupportedOperationException();
     }
 
     @Override
