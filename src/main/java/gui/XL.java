@@ -145,6 +145,10 @@ public class XL extends Application {
 
   public void clearCurrent(){
     model.clearCell(currentCell.get().address.toString());
+    GridCell cell = currentCell.get();
+    if (cell != null) {
+      model.update(cell.address.toString(), "");
+    }
   }
 
   public void clearCell(String adress) {
