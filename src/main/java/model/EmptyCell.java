@@ -13,8 +13,8 @@ public class EmptyCell implements Cell {
     }
 
     @Override
-    public ExprResult evaluate(Environment e) throws IOException {
-        throw new IOException("Missing value");
+    public ExprResult evaluate(Environment e){
+        throw new Error("Missing value");
     }
 
     @Override

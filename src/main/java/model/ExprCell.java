@@ -1,19 +1,20 @@
 package model;
 
-import expr.Environment;
-import expr.ErrorResult;
-import expr.ExprParser;
-import expr.ExprResult;
+import expr.*;
 
 import java.io.IOException;
 
 public class ExprCell implements Cell {
      private final String expr;
-     private ExprParser parser;
+     private Expr ex;
 
      public ExprCell(String expr) {
           this.expr = expr;
-          parser = new ExprParser();
+          try {
+               ex = new ExprParser().build(expr);
+          } catch (IOException e) {
+               ex = new ErrorExpr(e.getMessage());
+          }
      }
 
      @Override
@@ -21,7 +22,7 @@ public class ExprCell implements Cell {
           return expr;
      }
 
-     public ExprResult evaluate(Environment e) throws IOException {
-          return parser.build(expr).value(e);
+     public ExprResult evaluate(Environment env){
+          return ex.value(env);
      }
 }

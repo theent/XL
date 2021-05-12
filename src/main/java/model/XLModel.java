@@ -45,19 +45,13 @@ public class XLModel implements Environment {
   private void evaluateExpr(String text, String address){
     Cell newCell = new ExprCell(text);
     contents.put(address, new CircularCell());
-    ExprResult res;
-
-    try{
-      res = newCell.evaluate(this);
-    } catch (IOException e){
-      res = new ErrorResult(e.getMessage());
-    }
+    ExprResult res = newCell.evaluate(this);
 
     String value;
     if (res.isError()){
-      if (res.error().contains("Circular Error")){
+      if (res.error().contains("Circular")){
         newCell = new CircularCell(text, res.toString());
-      } else{
+      } else {
         newCell = new TextCell(text, res.toString());
       }
 
@@ -91,9 +85,10 @@ public class XLModel implements Environment {
   public ExprResult value(String name) {
     name = name.toUpperCase();
     Cell cell = getCell(name);
+
     try{
       return cell.evaluate(this);
-    } catch (IOException e){
+    } catch (Error e){
       return new ErrorResult(e.getMessage() + " " + name);
     }
   }
