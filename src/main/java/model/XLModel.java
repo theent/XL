@@ -15,7 +15,7 @@ public class XLModel implements Environment {
   private final List<OnUpdateObserver> observers;
 
   public XLModel(){
-    contents = new HashMap<>();
+    contents = new LinkedHashMap<>();
     observers = new ArrayList<>();
   }
 
