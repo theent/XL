@@ -27,8 +27,8 @@ public class CircularCell implements Cell{
     }
 
     @Override
-    public ExprResult evaluate(Environment e) throws IOException {
-        throw new IOException("Circular Error");
+    public ExprResult evaluate(Environment e){
+        throw new Error("Circular Error");
     }
 
     @Override
