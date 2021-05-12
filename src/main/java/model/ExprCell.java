@@ -36,7 +36,7 @@ public class ExprCell implements Cell {
           try{
                ExprResult res = parser.build(expr).value(e);
                if (res.isError()){
-                    throw new Error(res.toString());
+                    throw new CircularError(res.toString());
                } else{
                     this.value = res.value();
                }
