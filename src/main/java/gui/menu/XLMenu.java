@@ -18,7 +18,7 @@ public class XLMenu extends MenuBar {
     Menu editMenu = new Menu("Edit");
     MenuItem clear = new MenuItem("Clear");
     clear.setOnAction(event -> {
-      xl.clearCell(xl.getAddress());
+      xl.clearCurrent();
     });
     MenuItem clearAll = new MenuItem("ClearAll");
     clearAll.setOnAction(event -> {

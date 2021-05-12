@@ -138,12 +138,13 @@ public class XL extends Application {
     }
   }
 
-  public String getAddress(){
-    return currentCell.get().address.toString();
-  }
 
   public void saveFile(File file) {
     model.saveFile(file);
+  }
+
+  public void clearCurrent(){
+    model.clearCell(currentCell.get().address.toString());
   }
 
   public void clearCell(String adress) {
