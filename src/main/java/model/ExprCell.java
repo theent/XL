@@ -21,26 +21,7 @@ public class ExprCell implements Cell {
           return expr;
      }
 
-     @Override
-     public Double value(Environment e) throws IOException {
-          return parser.build(expr).value(e).value();
+     public ExprResult evaluate(Environment e) throws IOException {
+          return parser.build(expr).value(e);
      }
-
-    /* @Override
-     public void evaluate(Environment e) {
-          if (expr.length() == 0){
-               throw new EmptyError(expr);
-          }
-
-          try{
-               ExprResult res = parser.build(expr).value(e);
-               if (res.isError()){
-                    throw new CircularError(res.toString());
-               } else{
-                    this.value = res.value();
-               }
-          } catch (IOException ex){
-               throw new Error(new ErrorResult(ex.getMessage()).toString());
-          }
-     }*/
 }

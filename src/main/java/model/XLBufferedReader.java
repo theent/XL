@@ -14,14 +14,14 @@ public class XLBufferedReader extends BufferedReader {
     super(new FileReader(file));
   }
 
-  public void load(Map<String, String> map) throws IOException {
+  public void load(XLModel model) throws IOException {
     try {
       while (ready()) {
         String string = readLine();
         int i = string.indexOf('=');
         String address = string.substring(0, i);
         String exp = string.substring(i + 1);
-        map.put(address, exp);
+        model.update(address, exp);
       }
     } catch (Exception e) {
       throw new XLException(e.getMessage());

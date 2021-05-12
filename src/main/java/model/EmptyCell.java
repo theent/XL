@@ -1,6 +1,8 @@
 package model;
 
 import expr.Environment;
+import expr.ErrorResult;
+import expr.ExprResult;
 
 import java.io.IOException;
 
@@ -11,7 +13,12 @@ public class EmptyCell implements Cell {
     }
 
     @Override
-    public Double value(Environment e) throws IOException {
-        throw new EmptyError("Missing value");
+    public ExprResult evaluate(Environment e) throws IOException {
+        throw new IOException("Missing value");
+    }
+
+    @Override
+    public String toString(){
+        return "";
     }
 }

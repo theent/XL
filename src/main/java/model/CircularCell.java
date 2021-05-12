@@ -1,6 +1,8 @@
 package model;
 
 import expr.Environment;
+import expr.ErrorResult;
+import expr.ExprResult;
 
 import java.io.IOException;
 
@@ -25,8 +27,8 @@ public class CircularCell implements Cell{
     }
 
     @Override
-    public Double value(Environment e) throws IOException {
-        throw new CircularError("Circular Error");
+    public ExprResult evaluate(Environment e) throws IOException {
+        throw new IOException("Circular Error");
     }
 
     @Override
