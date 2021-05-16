@@ -1,8 +1,6 @@
 package model;
 
-import expr.Environment;
-import expr.ErrorResult;
-import expr.ExprResult;
+import expr.*;
 
 import java.io.IOException;
 
@@ -10,9 +8,15 @@ public class TextCell implements Cell {
     private final String content;
     private final String expr;
 
+    /**
+     * Creates a Cell that contains a Comment
+     * @param expr
+     * @param content
+     */
     public TextCell(String expr, String content) {
         this.expr = expr;
         this.content = content;
+
     }
 
     @Override

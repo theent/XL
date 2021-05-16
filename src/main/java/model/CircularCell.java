@@ -11,9 +11,17 @@ public class CircularCell implements Cell{
     private String expr;
     private String content;
 
+    /**
+     * Creates a CircularCell,
+     * which is used to prevent StackOverflow from CircularErrors
+     */
     public CircularCell(){
         this.expr = null;
         this.content = null;
+    }
+
+    public CircularCell(String expr) {
+        this.expr = expr;
     }
 
     public CircularCell(String expr, String content){

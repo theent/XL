@@ -8,6 +8,10 @@ public class ExprCell implements Cell {
      private final String expr;
      private Expr ex;
 
+     /**
+      * Creates a Cell that contains a expression
+      * @param expr
+      */
      public ExprCell(String expr) {
           this.expr = expr;
           try {

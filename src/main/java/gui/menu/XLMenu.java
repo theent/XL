@@ -16,10 +16,12 @@ public class XLMenu extends MenuBar {
     fileMenu.getItems().addAll(save, load, exit);
 
     Menu editMenu = new Menu("Edit");
+    //Clear button
     MenuItem clear = new MenuItem("Clear");
     clear.setOnAction(event -> {
       xl.clearCurrent();
     });
+    //Clear all button
     MenuItem clearAll = new MenuItem("ClearAll");
     clearAll.setOnAction(event -> {
       String letters = "ABCDEFGHIJ";
