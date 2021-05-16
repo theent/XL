@@ -7,6 +7,11 @@ public class TextCell implements Cell {
     private final String content;
     private final String expr;
 
+    /**
+     * Creates a new Cell containing a Comment
+     * @param expr
+     * @param content
+     */
     public TextCell(String expr, String content) {
         this.expr = expr;
         this.content = content;

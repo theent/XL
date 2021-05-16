@@ -7,9 +7,23 @@ import java.io.IOException;
 
 public interface Cell {
 
+    /**
+     * Returns the Expresion in text form
+     * @return
+     */
     String expr();
 
+    /**
+     * Evaluates the value of a expression and returns it as a ExprResult
+     * Ex: Input 2 + 2 returns 4
+     * @param env
+     * @return
+     */
     ExprResult evaluate(Environment env);
 
+    /**
+     * Mainly used by TextCell to return the comment in "pure" text
+     * @return
+     */
     String toString();
 }
