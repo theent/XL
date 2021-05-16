@@ -1,22 +1,15 @@
 package model;
 
-import expr.*;
-
-import java.io.IOException;
+import expr.Environment;
+import expr.ExprResult;
 
 public class TextCell implements Cell {
     private final String content;
     private final String expr;
 
-    /**
-     * Creates a Cell that contains a Comment
-     * @param expr
-     * @param content
-     */
     public TextCell(String expr, String content) {
         this.expr = expr;
         this.content = content;
-
     }
 
     @Override
@@ -25,7 +18,7 @@ public class TextCell implements Cell {
     }
 
     @Override
-    public ExprResult evaluate(Environment e){
+    public ExprResult evaluate(Environment env){
         throw new Error("Missing value");
     }
 

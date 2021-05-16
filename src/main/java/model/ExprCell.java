@@ -1,7 +1,6 @@
 package model;
 
 import expr.*;
-
 import java.io.IOException;
 
 public class ExprCell implements Cell {
@@ -14,6 +13,7 @@ public class ExprCell implements Cell {
       */
      public ExprCell(String expr) {
           this.expr = expr;
+
           try {
                ex = new ExprParser().build(expr);
           } catch (IOException e) {

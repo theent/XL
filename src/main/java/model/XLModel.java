@@ -15,7 +15,7 @@ public class XLModel implements Environment {
   private final List<OnUpdateObserver> observers;
 
   public XLModel(){
-    contents = new HashMap<>();
+    contents = new LinkedHashMap<>();
     observers = new ArrayList<>();
   }
 
@@ -42,47 +42,25 @@ public class XLModel implements Environment {
     checkReferences(address, new HashSet<>());
   }
 
-  /**
-   * Evaluates the content of a Cell follows the proper procedure
-   * @param text
-   * @param address
-   */
   private void evaluateExpr(String text, String address){
     Cell newCell = new ExprCell(text);
     contents.put(address, new CircularCell());
     ExprResult res = newCell.evaluate(this);
 
-    String value;
     if (res.isError()){
-      if (res.error().contains("Circular")){
-        newCell = new CircularCell(text, res.toString());
-      } else {
-        newCell = new TextCell(text, res.toString());
-      }
-
-      value = newCell.toString();
-    } else{
-      value = Double.toString(res.value());
+      newCell = new ErrorCell(text , res.error().contains("Missing value") ? "Circular Error" : res.error());
     }
 
     contents.put(address, newCell);
-    notifyObservers(address, value);
+    notifyObservers(address, !res.isError() ? Double.toString(res.value()) : res.toString());
   }
 
-  /**
-   * Clears the content of a cell
-    * @param address
-   */
   public void clearCell(String address){
     Cell c = new EmptyCell();
     contents.put(address, c);
     notifyObservers(address, c.toString());
   }
 
-  /**
-   * Adds a Observer to the observer list
-   * @param o
-   */
   public void addObserver(OnUpdateObserver o){
     observers.add(o);
   }
@@ -94,11 +72,6 @@ public class XLModel implements Environment {
     }
   }
 
-  /**
-   * Return the result of a expression
-   * @param name
-   * @return
-   */
   @Override
   public ExprResult value(String name) {
     name = name.toUpperCase();
@@ -111,31 +84,23 @@ public class XLModel implements Environment {
     }
   }
 
-  /**
-   * Recursion method to update all Cells after new value is put in Cell
-   * @param currentAddress
-   * @param visited
-   */
   private void checkReferences(String currentAddress, HashSet<String> visited){
-
     for (Map.Entry<String, Cell> entry : contents.entrySet()){
       if (entry.getValue().expr().toUpperCase().contains(currentAddress)){
-          if (visited.contains(entry.getKey())){
-            return;
+        if (!visited.add(entry.getKey())){
+          for (String s : visited){
+            evaluateExpr(contents.get(s).expr(), s);
           }
 
-        visited.add(entry.getKey());
+          return;
+        }
+
         evaluateExpr(entry.getValue().expr(), entry.getKey());
         checkReferences(entry.getKey(), visited);
       }
     }
   }
 
-  /**
-   * Returns the cell at the specified adress
-   * @param address
-   * @return
-   */
   public Cell getCell(String address){
     if (contents.containsKey(address))
       return contents.get(address);
@@ -143,11 +108,6 @@ public class XLModel implements Environment {
     return new EmptyCell();
   }
 
-  /**
-   * Loads the content of a xml file to the program
-   * @param file
-   * @throws FileNotFoundException
-   */
   public void loadFile(File file) throws FileNotFoundException {
     XLBufferedReader reader = new XLBufferedReader(file);
 
@@ -162,10 +122,6 @@ public class XLModel implements Environment {
     }
   }
 
-  /**
-   * Saves the content from the program to a xml file
-   * @param file
-   */
   public void saveFile(File file) {
     try {
       XLPrintStream printStream = new XLPrintStream(file.toString());
