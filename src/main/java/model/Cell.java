@@ -16,6 +16,7 @@ public interface Cell {
     /**
      * Evaluates the value of a expression and returns it as a ExprResult
      * Ex: Input 2 + 2 returns 4
+     * All but ExprCell returns Errors
      * @param env
      * @return
      */
