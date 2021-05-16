@@ -42,6 +42,11 @@ public class XLModel implements Environment {
     checkReferences(address, new HashSet<>());
   }
 
+  /**
+   * Evaluates the input and takes the proper procedures
+   * @param text
+   * @param address
+   */
   private void evaluateExpr(String text, String address){
     Cell newCell = new ExprCell(text);
     contents.put(address, new CircularCell());
@@ -55,12 +60,20 @@ public class XLModel implements Environment {
     notifyObservers(address, !res.isError() ? Double.toString(res.value()) : res.toString());
   }
 
+  /**
+   * Clears the content from a cell
+   * @param address
+   */
   public void clearCell(String address){
     Cell c = new EmptyCell();
     contents.put(address, c);
     notifyObservers(address, c.toString());
   }
 
+  /**
+   * Adds a ovserver to the observerList
+   * @param o
+   */
   public void addObserver(OnUpdateObserver o){
     observers.add(o);
   }
@@ -72,6 +85,11 @@ public class XLModel implements Environment {
     }
   }
 
+  /**
+   * Returns the result from a expression
+   * @param name
+   * @return
+   */
   @Override
   public ExprResult value(String name) {
     name = name.toUpperCase();
@@ -84,6 +102,11 @@ public class XLModel implements Environment {
     }
   }
 
+  /**
+   * Recursive method that updates all cells after a change has been made
+   * @param currentAddress
+   * @param visited
+   */
   private void checkReferences(String currentAddress, HashSet<String> visited){
     for (Map.Entry<String, Cell> entry : contents.entrySet()){
       if (entry.getValue().expr().toUpperCase().contains(currentAddress)){
@@ -101,6 +124,11 @@ public class XLModel implements Environment {
     }
   }
 
+  /**
+   * Gets the content of specified cell
+   * @param address
+   * @return
+   */
   public Cell getCell(String address){
     if (contents.containsKey(address))
       return contents.get(address);
@@ -108,6 +136,11 @@ public class XLModel implements Environment {
     return new EmptyCell();
   }
 
+  /**
+   * Loads the data from a xml file to the program
+   * @param file
+   * @throws FileNotFoundException
+   */
   public void loadFile(File file) throws FileNotFoundException {
     XLBufferedReader reader = new XLBufferedReader(file);
 
@@ -122,6 +155,10 @@ public class XLModel implements Environment {
     }
   }
 
+  /**
+   * Saves the data from the program to a xml file
+   * @param file
+   */
   public void saveFile(File file) {
     try {
       XLPrintStream printStream = new XLPrintStream(file.toString());
