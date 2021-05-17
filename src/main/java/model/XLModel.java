@@ -44,7 +44,10 @@ public class XLModel implements Environment {
       evaluateExpr(text, address);
     }
 
-    checkReferences(address, new HashSet<>());
+    for (Map.Entry<String, Cell> entry : contents.entrySet()){
+      if (!(entry.getValue() instanceof EmptyCell))
+        evaluateExpr(entry.getValue().expr(), entry.getKey());
+    }
   }
 
   /**
@@ -56,10 +59,6 @@ public class XLModel implements Environment {
     Cell newCell = new ExprCell(text);
     contents.put(address, new CircularCell());
     ExprResult res = newCell.evaluate(this);
-
-    if (res.isError()){
-      newCell = new ErrorCell(text , res.error().contains("Missing value") ? "Circular Error" : res.error());
-    }
 
     contents.put(address, newCell);
     notifyObservers(address, !res.isError() ? Double.toString(res.value()) : res.toString());
@@ -104,32 +103,6 @@ public class XLModel implements Environment {
       return cell.evaluate(this);
     } catch (Error e){
       return new ErrorResult(e.getMessage() + " " + name);
-    }
-  }
-
-  /**
-   * Recursive method that updates all cells after a change has been made
-   * @param currentAddress
-   * @param visited
-   */
-  private void checkReferences(String currentAddress, HashSet<String> visited){
-    for (Map.Entry<String, Cell> entry : contents.entrySet()){
-      if (!(entry.getValue() instanceof EmptyCell))
-      evaluateExpr(entry.getValue().expr(), entry.getKey());
-
-      /*if (entry.getValue().expr().toUpperCase().contains(currentAddress)){
-        evaluateExpr(entry.getValue().expr(), entry.getKey());
-        if (!visited.add(entry.getKey())){
-          for (String s : visited){
-            evaluateExpr(contents.get(s).expr(), s);
-          }
-
-          return;
-        }
-
-        evaluateExpr(entry.getValue().expr(), entry.getKey());
-        checkReferences(entry.getKey(), visited);
-      }*/
     }
   }
 
