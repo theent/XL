@@ -43,19 +43,19 @@ public class XLModel implements Environment {
 
     checkReferences(address, visited);
     int varv = (contents.size() / 16) + 1;
-    helpMe(varv, visited);
+    updateVisited(varv, visited);
 
 
   }
 
-  private void helpMe(int varv, HashSet<String> visited) {
+  private void updateVisited(int varv, HashSet<String> visited) {
     if(varv == 0) {
       return;
     }
     for (String s : visited){
             evaluateExpr(contents.get(s).expr(), s);
           }
-    helpMe(varv - 1, visited);
+    updateVisited(varv - 1, visited);
 
   }
 
