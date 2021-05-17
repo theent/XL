@@ -114,7 +114,11 @@ public class XLModel implements Environment {
    */
   private void checkReferences(String currentAddress, HashSet<String> visited){
     for (Map.Entry<String, Cell> entry : contents.entrySet()){
-      if (entry.getValue().expr().toUpperCase().contains(currentAddress)){
+      if (!(entry.getValue() instanceof EmptyCell))
+      evaluateExpr(entry.getValue().expr(), entry.getKey());
+
+      /*if (entry.getValue().expr().toUpperCase().contains(currentAddress)){
+        evaluateExpr(entry.getValue().expr(), entry.getKey());
         if (!visited.add(entry.getKey())){
           for (String s : visited){
             evaluateExpr(contents.get(s).expr(), s);
@@ -125,7 +129,7 @@ public class XLModel implements Environment {
 
         evaluateExpr(entry.getValue().expr(), entry.getKey());
         checkReferences(entry.getKey(), visited);
-      }
+      }*/
     }
   }
 
