@@ -11,16 +11,16 @@ public class XLModel implements Environment {
   public static final int COLUMNS = 10, ROWS = 10;
 
   // String = Adress, typ B3, CellContent är vad addressen innehåller
-  private final Map<String, Cell> contents;      //Kvalificerad association
+  private final Map<String, Cell> cells;      //Kvalificerad association
   private final List<OnUpdateObserver> observers;
 
   public XLModel(){
-    contents = new LinkedHashMap<>();
+    cells = new HashMap<>();
     observers = new ArrayList<>();
 
     for (int i = 0; i < ROWS; i++) {
       for (int j = 0; j < COLUMNS; j++) {
-        contents.put(new CellAddress(i, j).toString(), new EmptyCell());
+        cells.put(new CellAddress(i, j).toString(), new EmptyCell());
       }
     }
   }
@@ -34,20 +34,20 @@ public class XLModel implements Environment {
   public void update(String address, String text) {
     if (text.length() == 0){
       EmptyCell eC = new EmptyCell();
-      contents.put(address, eC);
+      cells.put(address, eC);
       notifyObservers(address, eC.toString());
     } else if (text.charAt(0) == '#'){
       TextCell tC = new TextCell(text, text.substring(1));
-      contents.put(address, tC);
+      cells.put(address, tC);
       notifyObservers(address, tC.toString());
     } else{
       evaluateExpr(text, address);
     }
 
-    for (Map.Entry<String, Cell> entry : contents.entrySet()){
+    cells.entrySet().forEach(entry ->{
       if (entry.getValue() instanceof ExprCell)
         evaluateExpr(entry.getValue().expr(), entry.getKey());
-    }
+    });
   }
 
   /**
@@ -57,10 +57,10 @@ public class XLModel implements Environment {
    */
   private void evaluateExpr(String text, String address){
     Cell newCell = new ExprCell(text);
-    contents.put(address, new CircularCell());
+    cells.put(address, new CircularCell());
     ExprResult res = newCell.evaluate(this);
 
-    contents.put(address, newCell);
+    cells.put(address, newCell);
     notifyObservers(address, !res.isError() ? Double.toString(res.value()) : res.toString());
   }
 
@@ -70,7 +70,7 @@ public class XLModel implements Environment {
    */
   public void clearCell(String address){
     Cell c = new EmptyCell();
-    contents.put(address, c);
+    cells.put(address, c);
     notifyObservers(address, c.toString());
   }
 
@@ -112,7 +112,7 @@ public class XLModel implements Environment {
    * @return
    */
   public Cell getCell(String address){
-    return contents.get(address);
+    return cells.get(address);
   }
 
   /**
@@ -123,7 +123,7 @@ public class XLModel implements Environment {
   public void loadFile(File file) throws FileNotFoundException {
     XLBufferedReader reader = new XLBufferedReader(file);
 
-    for(Map.Entry<String, Cell> entry : contents.entrySet()) {
+    for(Map.Entry<String, Cell> entry : cells.entrySet()) {
       clearCell(entry.getKey());
     }
 
@@ -141,7 +141,7 @@ public class XLModel implements Environment {
   public void saveFile(File file) {
     try {
       XLPrintStream printStream = new XLPrintStream(file.toString());
-      printStream.save(contents.entrySet());
+      printStream.save(cells.entrySet());
     } catch (FileNotFoundException e) {
       e.printStackTrace();
     }
