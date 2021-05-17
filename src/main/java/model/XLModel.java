@@ -45,7 +45,7 @@ public class XLModel implements Environment {
     }
 
     for (Map.Entry<String, Cell> entry : contents.entrySet()){
-      if (!(entry.getValue() instanceof EmptyCell))
+      if (entry.getValue() instanceof ExprCell)
         evaluateExpr(entry.getValue().expr(), entry.getKey());
     }
   }
