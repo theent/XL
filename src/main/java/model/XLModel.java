@@ -26,7 +26,6 @@ public class XLModel implements Environment {
    * @param text    the new code for the cell - can be raw text (starting with #) or an expression
    */
   public void update(String address, String text) {
-
     if (text.length() == 0){
       EmptyCell eC = new EmptyCell();
       contents.put(address, eC);
