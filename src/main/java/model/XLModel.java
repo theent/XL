@@ -17,6 +17,12 @@ public class XLModel implements Environment {
   public XLModel(){
     contents = new LinkedHashMap<>();
     observers = new ArrayList<>();
+
+    for (int i = 0; i < ROWS; i++) {
+      for (int j = 0; j < COLUMNS; j++) {
+        contents.put(new CellAddress(i, j).toString(), new EmptyCell());
+      }
+    }
   }
 
   /**
@@ -129,10 +135,7 @@ public class XLModel implements Environment {
    * @return
    */
   public Cell getCell(String address){
-    if (contents.containsKey(address))
-      return contents.get(address);
-
-    return new EmptyCell();
+    return contents.get(address);
   }
 
   /**
