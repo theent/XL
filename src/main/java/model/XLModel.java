@@ -31,8 +31,7 @@ public class XLModel extends CellFactory implements Environment {
    * @param text    the new code for the cell - can be raw text (starting with #) or an expression
    */
   public void update(CellAddress address, String text) {
-    Cell c = createCell(text);
-    cells.put(address.toString(), c);
+    cells.put(address.toString(), createCell(text));
 
     cells.forEach((key, value) ->{
       String input = value.inputText();
