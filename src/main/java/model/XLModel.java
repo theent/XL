@@ -97,7 +97,7 @@ public class XLModel implements Environment {
   @Override
   public ExprResult value(String name) {
     name = name.toUpperCase();
-    Cell cell = getCell(name);
+    Cell cell = cells.get(name);
 
     try{
       return cell.evaluate(this);
@@ -111,8 +111,8 @@ public class XLModel implements Environment {
    * @param address
    * @return
    */
-  public Cell getCell(String address){
-    return cells.get(address);
+  public String getCell(String address){
+    return cells.get(address).expr();
   }
 
   /**

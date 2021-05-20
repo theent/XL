@@ -88,7 +88,7 @@ public class XL extends Application {
       if (newValue != null) {
         addressLbl.setText(newValue.address.toString() + " =");
         editor.setDisable(false);
-        editor.setText(model.getCell(newValue.address.toString()).expr());
+        editor.setText(model.getCell(newValue.address.toString()));
         editor.requestFocus();
       } else {
         addressLbl.setText("?? =");

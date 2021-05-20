@@ -5,7 +5,7 @@ import expr.ExprResult;
 
 import java.io.IOException;
 
-public interface Cell {
+interface Cell {
 
     /**
      * Returns the Expresion in text form
