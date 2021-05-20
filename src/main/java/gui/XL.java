@@ -72,7 +72,7 @@ public class XL extends Application {
       // This listener is called when the user presses the enter key in the editor.
       GridCell cell = currentCell.get();
       if (cell != null) {
-        model.update(cell.address.toString(), editor.getText());
+        model.update(cell.address, editor.getText());
       }
     });
 
@@ -147,7 +147,7 @@ public class XL extends Application {
     model.clearCell(currentCell.get().address.toString());
     GridCell cell = currentCell.get();
     if (cell != null) {
-      model.update(cell.address.toString(), "");
+      model.update(cell.address, "");
     }
   }
 
