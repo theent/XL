@@ -2,9 +2,6 @@ package model;
 
 import expr.Environment;
 import expr.ExprResult;
-
-import java.io.IOException;
-
 interface Cell {
 
     /**
