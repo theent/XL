@@ -130,7 +130,7 @@ public class XLModel extends CellFactory implements Environment {
     }
 
     tempMap.forEach((key, value) -> {
-      update(new CellAddress(key.charAt(0)%32-1, Integer.parseInt(key.substring(1))-1), value);
+      update(new CellAddress(key.charAt(0)%65, Integer.parseInt(key.substring(1))-1), value);
     });
   }
 
