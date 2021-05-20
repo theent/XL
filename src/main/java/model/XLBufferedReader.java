@@ -21,7 +21,7 @@ public class XLBufferedReader extends BufferedReader {
         int i = string.indexOf('=');
         String address = string.substring(0, i);
         String exp = string.substring(i + 1);
-        model.update(address, exp);
+        tempMap.put(address, exp);
       }
     } catch (Exception e) {
       throw new XLException(e.getMessage());
