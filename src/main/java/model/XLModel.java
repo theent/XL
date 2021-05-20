@@ -33,8 +33,7 @@ public class XLModel extends CellFactory implements Environment {
   public void update(CellAddress address, String text) {
     cells.put(address.toString(), createCell(text));
     cells.forEach((key, value) ->{
-      String input = value.inputText();
-      String newValue = evaluateExpr(input, key);
+      String newValue = evaluateExpr(value.inputText(), key);
       notifyObservers(key, newValue);
     });
   }
