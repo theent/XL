@@ -24,7 +24,6 @@ public class XLModel extends CellFactory implements Environment {
       }
     }
   }
-//hej
   /**
    * Called when the code for a cell changes.
    *
