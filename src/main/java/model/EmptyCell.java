@@ -6,12 +6,12 @@ import expr.ExprResult;
 public class EmptyCell implements Cell {
 
     @Override
-    public String expr() {
+    public String inputText() {
         return "";
     }
 
     @Override
-    public ExprResult evaluate(Environment env){
+    public ExprResult evaluateExpr(Environment env){
         throw new Error("Missing value");
     }
 

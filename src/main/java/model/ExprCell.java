@@ -22,11 +22,12 @@ public class ExprCell implements Cell {
      }
 
      @Override
-     public String expr() {
+     public String inputText() {
           return expr;
      }
 
-     public ExprResult evaluate(Environment env){
+     public ExprResult evaluateExpr(Environment env){
           return ex.value(env);
      }
+
 }

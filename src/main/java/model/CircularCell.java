@@ -9,12 +9,12 @@ import expr.ExprResult;
 public class CircularCell implements Cell{
 
     @Override
-    public String expr() {
+    public String inputText() {
         return "";
     }
 
     @Override
-    public ExprResult evaluate(Environment e){
+    public ExprResult evaluateExpr(Environment e){
         throw new Error("Circular Error");
     }
 }

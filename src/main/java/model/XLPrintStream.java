@@ -14,7 +14,7 @@ public class XLPrintStream extends PrintStream {
     for (Entry<String, Cell> entry : set) {
       print(entry.getKey());
       print('=');
-      println(entry.getValue().expr());
+      println(entry.getValue().inputText());
     }
 
     flush();

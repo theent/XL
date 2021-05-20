@@ -44,9 +44,9 @@ public class XLModel implements Environment {
       evaluateExpr(text, address);
     }
 
-    cells.entrySet().forEach(entry ->{
-      if (entry.getValue() instanceof ExprCell)
-        evaluateExpr(entry.getValue().expr(), entry.getKey());
+    cells.forEach((key, value) -> {
+      if (value instanceof ExprCell)
+        evaluateExpr(value.inputText(), key);
     });
   }
 
@@ -58,7 +58,7 @@ public class XLModel implements Environment {
   private void evaluateExpr(String text, String address){
     Cell newCell = new ExprCell(text);
     cells.put(address, new CircularCell());
-    ExprResult res = newCell.evaluate(this);
+    ExprResult res = newCell.evaluateExpr(this);
 
     cells.put(address, newCell);
     notifyObservers(address, !res.isError() ? Double.toString(res.value()) : res.toString());
@@ -100,7 +100,7 @@ public class XLModel implements Environment {
     Cell cell = cells.get(name);
 
     try{
-      return cell.evaluate(this);
+      return cell.evaluateExpr(this);
     } catch (Error e){
       return new ErrorResult(e.getMessage() + " " + name);
     }
@@ -112,7 +112,7 @@ public class XLModel implements Environment {
    * @return
    */
   public String getCell(String address){
-    return cells.get(address).expr();
+    return cells.get(address).inputText();
   }
 
   /**

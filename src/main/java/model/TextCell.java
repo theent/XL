@@ -18,12 +18,12 @@ public class TextCell implements Cell {
     }
 
     @Override
-    public String expr() {
+    public String inputText() {
         return expr;
     }
 
     @Override
-    public ExprResult evaluate(Environment env){
+    public ExprResult evaluateExpr(Environment env){
         throw new Error("Missing value");
     }
 
