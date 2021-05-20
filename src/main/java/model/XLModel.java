@@ -7,7 +7,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.*;
 
-public class XLModel implements Environment {
+public class XLModel extends CellFactory implements Environment {
   public static final int COLUMNS = 10, ROWS = 10;
 
   // String = Adress, typ B3, CellContent är vad addressen innehåller
@@ -32,21 +32,13 @@ public class XLModel implements Environment {
    * @param text    the new code for the cell - can be raw text (starting with #) or an expression
    */
   public void update(String address, String text) {
-    if (text.length() == 0){
-      EmptyCell eC = new EmptyCell();
-      cells.put(address, eC);
-      notifyObservers(address, eC.toString());
-    } else if (text.charAt(0) == '#'){
-      TextCell tC = new TextCell(text, text.substring(1));
-      cells.put(address, tC);
-      notifyObservers(address, tC.toString());
-    } else{
-      evaluateExpr(text, address);
-    }
+    Cell c = createCell(text);
+    cells.put(address, c);
 
-    cells.forEach((key, value) -> {
-      if (value instanceof ExprCell)
-        evaluateExpr(value.inputText(), key);
+    cells.forEach((key, value) ->{
+      String input = value.inputText();
+      String newValue = evaluateExpr(input, key);
+      notifyObservers(key, newValue);
     });
   }
 
@@ -55,13 +47,21 @@ public class XLModel implements Environment {
    * @param text
    * @param address
    */
-  private void evaluateExpr(String text, String address){
+  private String evaluateExpr(String text, String address){
+    if (text == null || text.length() == 0) {
+      return "";
+    }
+
+    if (text.startsWith("#")) {
+      return text.substring(1);
+    }
+
     Cell newCell = new ExprCell(text);
     cells.put(address, new CircularCell());
     ExprResult res = newCell.evaluateExpr(this);
 
     cells.put(address, newCell);
-    notifyObservers(address, !res.isError() ? Double.toString(res.value()) : res.toString());
+    return !res.isError() ? Double.toString(res.value()) : res.toString();
   }
 
   /**
