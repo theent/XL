@@ -6,6 +6,8 @@ public abstract class CellFactory {
             return new EmptyCell();
         } else if (text.charAt(0) == '#'){
             return new TextCell(text, text.substring(1));
+        } else if (text.equals("Circular")){
+            return new CircularCell();
         } else{
             return new ExprCell(text);
         }

@@ -20,7 +20,7 @@ public class XLModel extends CellFactory implements Environment {
 
     for (int i = 0; i < ROWS; i++) {
       for (int j = 0; j < COLUMNS; j++) {
-        cells.put(new CellAddress(i, j).toString(), new EmptyCell());
+        cells.put(new CellAddress(i, j).toString(), createCell(""));
       }
     }
   }
@@ -32,7 +32,6 @@ public class XLModel extends CellFactory implements Environment {
    */
   public void update(CellAddress address, String text) {
     cells.put(address.toString(), createCell(text));
-
     cells.forEach((key, value) ->{
       String input = value.inputText();
       String newValue = evaluateExpr(input, key);
@@ -54,8 +53,8 @@ public class XLModel extends CellFactory implements Environment {
       return text.substring(1);
     }
 
-    Cell newCell = new ExprCell(text);
-    cells.put(address, new CircularCell());
+    Cell newCell = createCell(text);
+    cells.put(address, createCell("Circular"));
     ExprResult res = newCell.evaluateExpr(this);
 
     cells.put(address, newCell);
@@ -67,9 +66,8 @@ public class XLModel extends CellFactory implements Environment {
    * @param address
    */
   public void clearCell(String address){
-    Cell c = new EmptyCell();
-    cells.put(address, c);
-    notifyObservers(address, c.toString());
+    cells.put(address, createCell(""));
+    notifyObservers(address, "");
   }
 
   /**
