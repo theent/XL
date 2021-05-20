@@ -14,15 +14,18 @@ public class XLModel implements Environment {
   private final Map<String, Cell> cells;      //Kvalificerad association
   private final List<OnUpdateObserver> observers;
   private final List<String> expressions;
+  private final CellFactory cellFactory;
 
   public XLModel(){
     cells = new HashMap<>();
     observers = new ArrayList<>();
     expressions = new ArrayList<>();
+    cellFactory = new CellFactory();
 
     for (int i = 0; i < ROWS; i++) {
       for (int j = 0; j < COLUMNS; j++) {
-        cells.put(new CellAddress(i, j).toString(), new EmptyCell());
+        //cells.put(new CellAddress(i, j).toString(), new EmptyCell());
+        cells.put(new CellAddress(i, j).toString(), cellFactory.cellMaker("",""));
       }
     }
   }
@@ -35,12 +38,14 @@ public class XLModel implements Environment {
    */
   public void update(String address, String text) {
     if (text.length() == 0){
-      EmptyCell eC = new EmptyCell();
+      //EmptyCell eC = new EmptyCell();
+      Cell eC = cellFactory.cellMaker("", text);
       cells.put(address, eC);
       expressions.remove(address);
       notifyObservers(address, eC.toString());
     } else if (text.charAt(0) == '#'){
-      TextCell tC = new TextCell(text, text.substring(1));
+      //TextCell tC = new TextCell(text, text.substring(1));
+      Cell tC = cellFactory.cellMaker("T", text);
       cells.put(address, tC);
       expressions.remove(address);
       notifyObservers(address, tC.toString());
@@ -65,8 +70,10 @@ public class XLModel implements Environment {
    * @param address
    */
   private void evaluateExpr(String text, String address){
-    Cell newCell = new ExprCell(text);
-    cells.put(address, new CircularCell());
+    //Cell newCell = new ExprCell(text);
+    Cell newCell = cellFactory.cellMaker("E", text);
+    //cells.put(address, new CircularCell());
+    cells.put(address, cellFactory.cellMaker("C", text));
     ExprResult res = newCell.evaluateExpr(this);
 
     cells.put(address, newCell);
@@ -79,6 +86,7 @@ public class XLModel implements Environment {
    */
   public void clearCell(String address){
     Cell c = new EmptyCell();
+    //Cell c = cellFactory.cellMaker("","");
     cells.put(address, c);
     expressions.remove(address);
     notifyObservers(address, c.toString());
