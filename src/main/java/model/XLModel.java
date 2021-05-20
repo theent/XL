@@ -122,16 +122,20 @@ public class XLModel extends CellFactory implements Environment {
    */
   public void loadFile(File file) throws FileNotFoundException {
     XLBufferedReader reader = new XLBufferedReader(file);
+    Map<String, String> tempMap = new LinkedHashMap<>();
+    try {
+      reader.load(tempMap);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
 
     for(Map.Entry<String, Cell> entry : cells.entrySet()) {
       clearCell(entry.getKey());
     }
 
-    try {
-      reader.load(this);
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
+    tempMap.forEach((key, value) -> {
+      update(new CellAddress(key.charAt(0)%32-1, Integer.parseInt(key.substring(1))-1), value);
+    });
   }
 
   /**

@@ -14,7 +14,7 @@ public class XLBufferedReader extends BufferedReader {
     super(new FileReader(file));
   }
 
-  public void load(XLModel model) throws IOException {
+  public void load(Map<String, String> tempMap) throws IOException {
     try {
       while (ready()) {
         String string = readLine();
