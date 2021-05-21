@@ -15,8 +15,4 @@ public class EmptyCell implements Cell {
         throw new Error("Missing value");
     }
 
-    @Override
-    public String toString(){
-        return "";
-    }
 }
